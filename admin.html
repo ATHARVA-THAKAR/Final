@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <title>Admin Dashboard</title>
+   <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
   <style>
     *{margin:0;padding:0;box-sizing:border-box;font-family:"Segoe UI",sans-serif}
     body{background:#f4f6f9;display:flex;min-height:100vh;color:#333}
@@ -218,5 +221,38 @@
     // initial
     switchView("dashboard");
   </script>
+  <script>
+    // Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyDXuMuxzI16MFE5qc58gqlBLUKzCgc3-R4",
+        authDomain: "mindcare-website-234d8.firebaseapp.com",
+        projectId: "mindcare-website-234d8",
+        storageBucket: "mindcare-website-234d8.firebasestorage.app",
+        messagingSenderId: "553199707478",
+        appId: "1:553199707478:web:f0706d1decf2cf6abee2f7"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    
+    // Check authentication state
+    firebase.auth().onAuthStateChanged((user) => {
+        if (!user) {
+            // User is not signed in, redirect to login
+            window.location.href = 'login.html';
+        }
+    });
+    
+    function logout() {
+        firebase.auth().signOut().then(() => {
+            window.location.href = 'index.html';
+        }).catch((error) => {
+            console.error('Logout error:', error);
+        });
+    }
+
+    // ... (keep your existing functions) ...
+  </script>
 </body>
 </html>
+
