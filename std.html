@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Student Dashboard</title>
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
   <style>
     body {
       margin: 0;
@@ -216,6 +219,47 @@
       document.getElementById("mySidebar").style.width = "0";
     }
   </script>
+<script>
+    // Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyDXuMuxzI16MFE5qc58gqlBLUKzCgc3-R4",
+        authDomain: "mindcare-website-234d8.firebaseapp.com",
+        projectId: "mindcare-website-234d8",
+        storageBucket: "mindcare-website-234d8.firebasestorage.app",
+        messagingSenderId: "553199707478",
+        appId: "1:553199707478:web:f0706d1decf2cf6abee2f7"
+    };
 
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    
+    // Check authentication state
+    firebase.auth().onAuthStateChanged((user) => {
+        if (!user) {
+            // User is not signed in, redirect to login
+            window.location.href = 'login.html';
+        } else {
+            // User is signed in, display user info
+            document.getElementById('profileImage').src = user.photoURL || 
+                'https://static.vecteezy.com/system/resources/previews/021/770/056/non_2x/avatar-of-a-student-character-free-vector.jpg';
+        }
+    });
+    
+    function logout() {
+        firebase.auth().signOut().then(() => {
+            window.location.href = 'index.html';
+        }).catch((error) => {
+            console.error('Logout error:', error);
+        });
+    }
+
+    function openSidebar() {
+      document.getElementById("mySidebar").style.width = "220px";
+    }
+    function closeSidebar() {
+      document.getElementById("mySidebar").style.width = "0";
+    }
+  </script>
 </body>
 </html>
+
