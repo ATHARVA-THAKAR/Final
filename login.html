@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MindCare - Login</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
     <style>
         :root {
             --primary: #6C63FF;
@@ -197,8 +200,8 @@
         
         <div class="login-form" id="loginForm">
             <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" placeholder="Enter your username">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="Enter your email">
             </div>
             <div class="form-group">
                 <label for="password">Password</label>
@@ -216,6 +219,19 @@
     </div>
 
     <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDXuMuxzI16MFE5qc58gqlBLUKzCgc3-R4",
+            authDomain: "mindcare-website-234d8.firebaseapp.com",
+            projectId: "mindcare-website-234d8",
+            storageBucket: "mindcare-website-234d8.firebasestorage.app",
+            messagingSenderId: "553199707478",
+            appId: "1:553199707478:web:f0706d1decf2cf6abee2f7"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        
         let selectedRole = '';
         
         function selectRole(role) {
@@ -242,29 +258,50 @@
         }
         
         function login() {
-            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             
             // Simple validation
-            if (!username || !password) {
-                alert('Please enter both username and password');
+            if (!email || !password) {
+                alert('Please enter both email and password');
                 return;
             }
             
-            // For demo purposes, we'll use simple credentials
-            // In a real application, this would connect to a backend authentication system
-            
-            if (selectedRole === 'student') {
-                // Redirect to student dashboard (std.html)
-                window.location.href = 'std.html';
-            } else if (selectedRole === 'admin') {
-                // Redirect to admin dashboard
-                window.location.href = 'admin.html';
-            } else if (selectedRole === 'counselor') {
-                // Redirect to counselor dashboard
-                window.location.href = 'counselor.html';
-            }
+            // Firebase authentication
+            firebase.auth().signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    // Signed in 
+                    const user = userCredential.user;
+                    
+                    // Set custom claim for role (this would typically be done on the backend)
+                    // For demo purposes, we'll just redirect based on selected role
+                    if (selectedRole === 'student') {
+                        window.location.href = 'std.html';
+                    } else if (selectedRole === 'admin') {
+                        window.location.href = 'admin.html';
+                    } else if (selectedRole === 'counselor') {
+                        window.location.href = 'counselor.html';
+                    }
+                })
+                .catch((error) => {
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    alert('Login failed: ' + errorMessage);
+                });
         }
+        
+        // Check if user is already logged in
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                // User is signed in, redirect to appropriate dashboard
+                user.getIdTokenResult().then((idTokenResult) => {
+                    const role = idTokenResult.claims.role || 'student';
+                    window.location.href = role + '.html';
+                }).catch(() => {
+                    window.location.href = 'std.html';
+                });
+            }
+        });
     </script>
 </body>
 </html>
