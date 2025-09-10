@@ -327,6 +327,20 @@ footer {
   .hero p { font-size: 1rem; }
   nav ul { gap: 15px; }
 }
+
+/* Chatbase Widget Container */
+#chatbase-widget-container {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 350px;
+  height: 500px;
+  z-index: 1000;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 5px 25px rgba(0,0,0,0.2);
+}
   </style>
 </head>
 <body>
@@ -340,7 +354,7 @@ footer {
       </ul>
     </nav>
    <div class="auth-buttons">
-  <button class="btn btn-primary" onclick="window.location.href='login.html'">Login</button>
+  <button class="btn btn-primary" onclick="showLogin()">Login</button>
   <button class="btn btn-primary" onclick="showSignup()">Sign Up</button>
 </div>
 
@@ -413,6 +427,11 @@ footer {
   <div class="footer-bottom"><p>&copy; 2025 MindCare. All rights reserved.</p></div>
 </footer>
 
+<!-- Chatbase Widget Container -->
+<div id="chatbase-widget-container">
+  <iframe id="chatbase-iframe" width="100%" height="100%" frameborder="0"></iframe>
+</div>
+
 <!-- Chatbase Integration Code -->
 <script>
 (function(){
@@ -432,26 +451,6 @@ footer {
 </script>
 
 <script>
-function scrollToChat() {
-  document.getElementById('chat').scrollIntoView({ behavior: 'smooth' });
-}
-function showLogin() {
-  alert('Login feature would be implemented here. Students would use their campus credentials.');
-}
-function showSignup() {
-  alert('Signup would connect to your campus authentication system.');
-}
-function openChatbaseWidget() {
-  const widget = document.getElementById('chatbase-widget-container');
-  widget.style.display = 'block';
-  document.getElementById('chatbase-iframe').src = 'https://www.chatbase.co/chatbot-iframe/your-chatbot-id';
-}
-function closeChatbaseWidget() {
-  const widget = document.getElementById('chatbase-widget-container');
-  widget.style.display = 'none';
-  document.getElementById('chatbase-iframe').src = 'about:blank';
-}
-<script>
   // Firebase configuration
   const firebaseConfig = {
     apiKey: "AIzaSyDXuMuxzI16MFE5qc58gqlBLUKzCgc3-R4",
@@ -462,19 +461,26 @@ function closeChatbaseWidget() {
     appId: "1:553199707478:web:f0706d1decf2cf6abee2f7"
   };
 
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-  
-  // Check if user is already logged in
-  firebase.auth().onAuthStateChanged((user) => {
-    if (user) {
-      // User is signed in, redirect based on role
-      user.getIdTokenResult().then((idTokenResult) => {
-        const role = idTokenResult.claims.role || 'student';
-        window.location.href = role + '.html';
-      });
-    }
-  });
+  // Initialize Firebase with error handling
+  try {
+    firebase.initializeApp(firebaseConfig);
+    console.log("Firebase initialized successfully");
+    
+    // Check if user is already logged in
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        // User is signed in, redirect based on role
+        user.getIdTokenResult().then((idTokenResult) => {
+          const role = idTokenResult.claims.role || 'student';
+          window.location.href = role + '.html';
+        }).catch((error) => {
+          console.error("Error getting user role:", error);
+        });
+      }
+    });
+  } catch (error) {
+    console.error("Firebase initialization error:", error);
+  }
 
   function scrollToChat() {
     document.getElementById('chat').scrollIntoView({ behavior: 'smooth' });
@@ -485,8 +491,8 @@ function closeChatbaseWidget() {
   }
   
   function showSignup() {
-  window.location.href = 'signup.html';
-}
+    window.location.href = 'signup.html';
+  }
   
   function openChatbaseWidget() {
     const widget = document.getElementById('chatbase-widget-container');
@@ -499,7 +505,6 @@ function closeChatbaseWidget() {
     widget.style.display = 'none';
     document.getElementById('chatbase-iframe').src = 'about:blank';
   }
-</script>
 </script>
 </body>
 </html>
