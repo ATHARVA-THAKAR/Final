@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>CampusMind - College Mental Health Support</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
   <style>
 :root {
   --primary: #6C63FF;   /* soft purple */
@@ -448,6 +451,55 @@ function closeChatbaseWidget() {
   widget.style.display = 'none';
   document.getElementById('chatbase-iframe').src = 'about:blank';
 }
+<script>
+  // Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyDXuMuxzI16MFE5qc58gqlBLUKzCgc3-R4",
+    authDomain: "mindcare-website-234d8.firebaseapp.com",
+    projectId: "mindcare-website-234d8",
+    storageBucket: "mindcare-website-234d8.firebasestorage.app",
+    messagingSenderId: "553199707478",
+    appId: "1:553199707478:web:f0706d1decf2cf6abee2f7"
+  };
+
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  
+  // Check if user is already logged in
+  firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+      // User is signed in, redirect based on role
+      user.getIdTokenResult().then((idTokenResult) => {
+        const role = idTokenResult.claims.role || 'student';
+        window.location.href = role + '.html';
+      });
+    }
+  });
+
+  function scrollToChat() {
+    document.getElementById('chat').scrollIntoView({ behavior: 'smooth' });
+  }
+  
+  function showLogin() {
+    window.location.href = 'login.html';
+  }
+  
+  function showSignup() {
+    window.location.href = 'login.html';
+  }
+  
+  function openChatbaseWidget() {
+    const widget = document.getElementById('chatbase-widget-container');
+    widget.style.display = 'block';
+    document.getElementById('chatbase-iframe').src = 'https://www.chatbase.co/chatbot-iframe/your-chatbot-id';
+  }
+  
+  function closeChatbaseWidget() {
+    const widget = document.getElementById('chatbase-widget-container');
+    widget.style.display = 'none';
+    document.getElementById('chatbase-iframe').src = 'about:blank';
+  }
+</script>
 </script>
 </body>
 </html>
