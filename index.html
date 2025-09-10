@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CampusMind - College Mental Health Support</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CampusMind - College Mental Health Support</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
 :root {
   --primary: #6C63FF;   /* soft purple */
   --secondary: #4ECDC4; /* teal */
-  --accent: #FF9F68;    /* peach/orange */
+  --accent: #FF9F68;    /* peach/orange*/
   --light: #ffffff;
   --dark: #2d3436;
   --emergency: #ff6b6b;
@@ -25,7 +25,7 @@
 
 /* Animated Background Gradient */
 body {
-  background: linear-gradient(270deg, var(--primary), var(--secondary), var(--accent));
+  background: linear-gradient(rgba(24, 135, 12, 0.653), rgba(15, 183, 26, 0.637));
   background-size: 600% 600%;
   animation: gradientShift 15s ease infinite;
   color: var(--dark);
@@ -48,6 +48,21 @@ body::before, body::after {
 }
 body::before { top: -100px; left: -100px; }
 body::after { bottom: -150px; right: -100px; }
+
+/* Subtle Flower of Life watermark */
+body::before {
+  content: "";
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  width: 500px;
+  height: 500px;
+  background: url('https://upload.wikimedia.org/wikipedia/commons/9/9a/Flower_of_Life_SVG.svg') no-repeat center;
+  background-size: contain;
+  opacity: 0.05;
+  transform: translateX(-50%);
+  z-index: -1;
+}
 
 @keyframes gradientShift {
   0% { background-position: 0% 50%; }
@@ -160,7 +175,7 @@ nav a:hover::after { width: 100%; }
 /* Hero Section */
 .hero {
   padding: 120px 20px;
-  background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.6)),
+  background: linear-gradient(rgba(166, 245, 245, 0.548), rgba(131, 234, 245, 0.6)),
               url('https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1400&q=80');
   background-size: cover;
   background-position: center;
@@ -184,9 +199,7 @@ nav a:hover::after { width: 100%; }
 }
 
 /* Features */
-.features {
-  padding: 80px 0;
-}
+.features { padding: 80px 0; }
 .section-title {
   text-align: center;
   margin-bottom: 40px;
@@ -230,9 +243,7 @@ nav a:hover::after { width: 100%; }
 }
 
 /* Resources */
-.resources {
-  padding: 80px 0;
-}
+.resources { padding: 80px 0; }
 .resources-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -245,21 +256,15 @@ nav a:hover::after { width: 100%; }
   transition: transform 0.3s ease;
   background: var(--light);
 }
-.resource-card:hover {
-  transform: translateY(-8px) scale(1.03);
-}
+.resource-card:hover { transform: translateY(-8px) scale(1.03); }
 .resource-img {
   height: 200px;
   background-size: cover;
   background-position: center;
   transition: transform 0.5s ease;
 }
-.resource-card:hover .resource-img {
-  transform: scale(1.1);
-}
-.resource-content {
-  padding: 20px;
-}
+.resource-card:hover .resource-img { transform: scale(1.1); }
+.resource-content { padding: 20px; }
 .resource-content h3 {
   color: var(--primary);
   margin-bottom: 10px;
@@ -276,7 +281,7 @@ nav a:hover::after { width: 100%; }
 
 /* Footer */
 footer {
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  background: rgba(51, 200, 246, 0.804);
   color: white;
   padding: 50px 20px 20px;
   border-top-left-radius: 40px;
@@ -288,22 +293,14 @@ footer {
   gap: 30px;
   margin-bottom: 30px;
 }
-.footer-section h3 {
-  margin-bottom: 15px;
-}
-.footer-section ul {
-  list-style: none;
-}
-.footer-section ul li {
-  margin-bottom: 10px;
-}
+.footer-section h3 { margin-bottom: 15px; }
+.footer-section ul { list-style: none; }
+.footer-section ul li { margin-bottom: 10px; }
 .footer-section a {
   color: #eee;
   text-decoration: none;
 }
-.footer-section a:hover {
-  color: #fff;
-}
+.footer-section a:hover { color: #fff; }
 .footer-bottom {
   text-align: center;
   padding-top: 15px;
@@ -311,10 +308,7 @@ footer {
 }
 
 /* Animations */
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 @keyframes slideUp {
   from { transform: translateY(30px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
@@ -330,172 +324,129 @@ footer {
   .hero p { font-size: 1rem; }
   nav ul { gap: 15px; }
 }
-
-
-    </style>
+  </style>
 </head>
 <body>
-    
-    <header>
-        <div class="container header-content">
-            <div class="logo"><i class="fas fa-brain"></i><h1>MindCare</h1></div>
-            <nav>
-                <ul>
-                    <li><a href="#resources">Resources</a></li>
-                    <li><a href="#about">About</a></li>
-                </ul>
-            </nav>
-<div class="auth-buttons">
-    <button class="btn btn-primary" onclick="window.location.href='login.html'">Login</button>
-</div>
-        </div>
-    </header>
-    <section class="emergency-contact">
-         <marquee>
-        <div class="container">
-            <p>If you're in crisis, please call the National Suicide Prevention Lifeline at <strong>1-800-273-8255</strong> or text <strong>HOME</strong> to <strong>741741</strong>.</p>
-        </div>
-    </marquee>
-    </section>
-    
-<section class="hero">
-    <div class="container">
-        <h2>Your Mental Wellness Companion</h2>
-        <p>MindCare provides 24/7 support through AI-powered conversations, resources, and tools to help you manage your mental health.</p>
-        <button class="btn btn-primary" onclick="openChatbaseWidget()">Start Chatting</button>
+<header>
+  <div class="container header-content">
+    <div class="logo"><i class="fas fa-brain"></i><h1>MindCare</h1></div>
+    <nav>
+      <ul>
+        <li><a href="#resources">Resources</a></li>
+        <li><a href="#about">About</a></li>
+      </ul>
+    </nav>
+    <div class="auth-buttons">
+      <button class="btn btn-primary" onclick="showLogin()">Login</button>
+      <button class="btn btn-primary" onclick="showSignup()">Sign Up</button>
     </div>
+  </div>
+</header>
+
+<section class="emergency-contact">
+  <marquee>
+    <div class="container">
+      <p>If you're in crisis, please call the National Suicide Prevention Lifeline at <strong>1-800-273-8255</strong> or text <strong>HOME</strong> to <strong>741741</strong>.</p>
+    </div>
+  </marquee>
+</section>
+
+<section class="hero">
+  <div class="container">
+    <h2>Your Mental Wellness Companion</h2>
+    <p>MindCare provides 24/7 support through AI-powered conversations, resources, and tools to help you manage your mental health.</p>
+    <button class="btn btn-primary" onclick="openChatbaseWidget()">Start Chatting</button>
+  </div>
 </section>
 
 <section class="features">
-    <div class="container">
-        <h2 class="section-title">How MindCare Supports You</h2>
-        <div class="features-grid">
-            <div class="feature-card">
-                <i class="fas fa-robot"></i>
-                <h3>AI-Guided First-Aid Support</h3>
-                <p>Get immediate coping strategies and guidance through our intelligent chatbot.</p>
-            </div>
-            <div class="feature-card">
-                <i class="fas fa-calendar-check"></i>
-                <h3>Confidential Booking System</h3>
-                <p>Schedule appointments with campus counselors securely and privately.</p>
-            </div>
-            <div class="feature-card">
-                <i class="fas fa-book-open"></i>
-                <h3>Psychoeducational Resource Hub</h3>
-                <p>Access videos, audio guides, and wellness resources in multiple languages.</p>
-            </div>
-            <div class="feature-card">
-                <i class="fas fa-users"></i>
-                <h3>Peer Support Platform</h3>
-                <p>Connect with trained student volunteers for moderated peer support.</p>
-            </div>
-            <div class="feature-card">
-                <i class="fas fa-chart-line"></i>
-                <h3>Admin Dashboard</h3>
-                <p>Anonymous analytics to help institutions understand mental health trends.</p>
-            </div>
-            <div class="feature-card">
-                <i class="fas fa-shield-alt"></i>
-                <h3>Stigma-Free Environment</h3>
-                <p>Completely confidential support that respects your privacy and dignity.</p>
-            </div>
-        </div>
+  <div class="container">
+    <h2 class="section-title">How MindCare Supports You</h2>
+    <div class="features-grid">
+      <div class="feature-card"><i class="fas fa-robot"></i><h3>AI-Guided First-Aid Support</h3><p>Get immediate coping strategies and guidance through our intelligent chatbot.</p></div>
+      <div class="feature-card"><i class="fas fa-calendar-check"></i><h3>Confidential Booking System</h3><p>Schedule appointments with campus counselors securely and privately.</p></div>
+      <div class="feature-card"><i class="fas fa-book-open"></i><h3>Psychoeducational Resource Hub</h3><p>Access videos, audio guides, and wellness resources in multiple languages.</p></div>
+      <div class="feature-card"><i class="fas fa-users"></i><h3>Peer Support Platform</h3><p>Connect with trained student volunteers for moderated peer support.</p></div>
+      <div class="feature-card"><i class="fas fa-chart-line"></i><h3>Admin Dashboard</h3><p>Anonymous analytics to help institutions understand mental health trends.</p></div>
+      <div class="feature-card"><i class="fas fa-shield-alt"></i><h3>Stigma-Free Environment</h3><p>Completely confidential support that respects your privacy and dignity.</p></div>
     </div>
+  </div>
 </section>
 
 <section class="resources" id="resources">
-    <div class="container">
-        <h2 class="section-title">Mental Health Resources</h2>
-        <div class="resources-grid">
-            <div class="resource-card">
-                <div class="resource-img" style="background-image: url('https://images.unsplash.com/photo-1506126613408-eca07ce68773?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80');"></div>
-                <div class="resource-content">
-                    <h3>Meditation Guides</h3>
-                    <p>Learn techniques to calm your mind and reduce stress through guided meditation.</p>
-                    <button class="btn btn-outline">Explore</button>
-                </div>
-            </div>
-            <div class="resource-card">
-                <div class="resource-img" style="background-image: url('https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80');"></div>
-                <div class="resource-content">
-                    <h3>Breathing Exercises</h3>
-                    <p>Simple breathing techniques to help manage anxiety and panic attacks.</p>
-                    <button class="btn btn-outline">Learn More</button>
-                </div>
-            </div>
-            <div class="resource-card">
-                <div class="resource-img" style="background-image: url('https://images.unsplash.com/icon-1544367567-0f2fcb009e0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80');"></div>
-                <div class="resource-content">
-                    <h3>Professional Help</h3>
-                    <p>Find licensed therapists and mental health professionals in your area.</p>
-                    <button class="btn btn-outline">Find Help</button>
-                </div>
-            </div>
-        </div>
+  <div class="container">
+    <h2 class="section-title">Mental Health Resources</h2>
+    <div class="resources-grid">
+      <div class="resource-card">
+        <div class="resource-img" style="background-image:url('https://images.unsplash.com/photo-1506126613408-eca07ce68773?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80');"></div>
+        <div class="resource-content"><h3>Meditation Guides</h3><p>Learn techniques to calm your mind and reduce stress through guided meditation.</p><button class="btn btn-outline">Explore</button></div>
+      </div>
+      <div class="resource-card">
+        <div class="resource-img" style="background-image:url('https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80');"></div>
+        <div class="resource-content"><h3>Breathing Exercises</h3><p>Simple breathing techniques to help manage anxiety and panic attacks.</p><button class="btn btn-outline">Learn More</button></div>
+      </div>
+      <div class="resource-card">
+        <div class="resource-img" style="background-image:url('https://images.unsplash.com/icon-1544367567-0f2fcb009e0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80');"></div>
+        <div class="resource-content"><h3>Professional Help</h3><p>Find licensed therapists and mental health professionals in your area.</p><button class="btn btn-outline">Find Help</button></div>
+      </div>
     </div>
+  </div>
 </section>
 
-
 <footer>
-    <div class="container footer-content">
-        <div class="footer-section">
-            <h3>MindCare</h3>
-            <p>Providing accessible mental health support through AI technology.</p>
-        </div>
-        <div class="footer-section">
-            <h3>Quick Links</h3>
-            <ul>
-                <li><a href="#resources">Resources</a></li>
-                <li><a href="#about">About Us</a></li>
-                <li><a href="#privacy">Privacy Policy</a></li>
-            </ul>
-        </div>
-        <div class="footer-section">
-            <h3>Contact</h3>
-            <p>Email: atharvathakar69@gmail.com</p>
-            <p>Phone: 1234567898</p>
-        </div>
+  <div class="container footer-content">
+    <div class="footer-section"><h3>MindCare</h3><p>Providing accessible mental health support through AI technology.</p></div>
+    <div class="footer-section">
+      <h3>Quick Links</h3>
+      <ul>
+        <li><a href="#resources">Resources</a></li>
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#privacy">Privacy Policy</a></li>
+      </ul>
     </div>
-    <div class="footer-bottom">
-        <p>&copy; 2025 MindCare. All rights reserved.</p>
-    </div>
+    <div class="footer-section"><h3>Contact</h3><p>Email: atharvathakar69@gmail.com</p><p>Phone: 1234567898</p></div>
+  </div>
+  <div class="footer-bottom"><p>&copy; 2025 MindCare. All rights reserved.</p></div>
 </footer>
-
 
 <!-- Chatbase Integration Code -->
 <script>
-    (function(){if(!window.chatbase||window.chatbase("getState")!=="initialized"){window.chatbase=(...arguments)=>{if(!window.chatbase.q){window.chatbase.q=[]}window.chatbase.q.push(arguments)};window.chatbase=new Proxy(window.chatbase,{get(target,prop){if(prop==="q"){return target.q}return(...args)=>target(prop,...args)}})}const onLoad=function(){const script=document.createElement("script");script.src="https://www.chatbase.co/embed.min.js";script.id="WCGK7lh19_x7L-xh7SoZo";script.domain="www.chatbase.co";document.body.appendChild(script)};if(document.readyState==="complete"){onLoad()}else{window.addEventListener("load",onLoad)}})();
+(function(){
+  if(!window.chatbase||window.chatbase("getState")!=="initialized"){
+    window.chatbase=(...arguments)=>{if(!window.chatbase.q){window.chatbase.q=[]}window.chatbase.q.push(arguments)};
+    window.chatbase=new Proxy(window.chatbase,{get(target,prop){if(prop==="q"){return target.q}return(...args)=>target(prop,...args)}});
+  }
+  const onLoad=function(){
+    const script=document.createElement("script");
+    script.src="https://www.chatbase.co/embed.min.js";
+    script.id="WCGK7lh19_x7L-xh7SoZo";
+    script.domain="www.chatbase.co";
+    document.body.appendChild(script)
+  };
+  if(document.readyState==="complete"){onLoad()}else{window.addEventListener("load",onLoad)}
+})();
 </script>
 
 <script>
-    // Helper functions
-    function scrollToChat() {
-        document.getElementById('chat').scrollIntoView({ behavior: 'smooth' });
-    }
-
-    function showLogin() {
-        alert('Login feature would be implemented here. Students would use their campus credentials.');
-    }
-
-    function showSignup() {
-        alert('Signup would connect to your campus authentication system.');
-    }
-    
-    // Chatbase widget functions
-    function openChatbaseWidget() {
-        const widget = document.getElementById('chatbase-widget-container');
-        widget.style.display = 'block';
-        // Load the Chatbase iframe with your actual chatbot ID
-        document.getElementById('chatbase-iframe').src = 'https://www.chatbase.co/chatbot-iframe/your-chatbot-id';
-        
-    }
-    
-    function closeChatbaseWidget() {
-        const widget = document.getElementById('chatbase-widget-container');
-        widget.style.display = 'none';
-        document.getElementById('chatbase-iframe').src = 'about:blank';
-    };
+function scrollToChat() {
+  document.getElementById('chat').scrollIntoView({ behavior: 'smooth' });
+}
+function showLogin() {
+  alert('Login feature would be implemented here. Students would use their campus credentials.');
+}
+function showSignup() {
+  alert('Signup would connect to your campus authentication system.');
+}
+function openChatbaseWidget() {
+  const widget = document.getElementById('chatbase-widget-container');
+  widget.style.display = 'block';
+  document.getElementById('chatbase-iframe').src = 'https://www.chatbase.co/chatbot-iframe/your-chatbot-id';
+}
+function closeChatbaseWidget() {
+  const widget = document.getElementById('chatbase-widget-container');
+  widget.style.display = 'none';
+  document.getElementById('chatbase-iframe').src = 'about:blank';
+}
 </script>
 </body>
 </html>
