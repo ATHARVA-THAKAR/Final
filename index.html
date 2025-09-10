@@ -461,31 +461,40 @@ footer {
     appId: "1:553199707478:web:f0706d1decf2cf6abee2f7"
   };
 
-  // Initialize Firebase with error handling
+  // Initialize Firebase with better error handling
   try {
-    firebase.initializeApp(firebaseConfig);
-    console.log("Firebase initialized successfully");
+    // Check if Firebase is already initialized
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+      console.log("Firebase initialized successfully");
+    } else {
+      firebase.app(); // if already initialized, use that one
+      console.log("Firebase already initialized");
+    }
     
     // Check if user is already logged in
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
+        console.log("User is signed in:", user.email);
         // User is signed in, redirect based on role
         user.getIdTokenResult().then((idTokenResult) => {
           const role = idTokenResult.claims.role || 'student';
           window.location.href = role + '.html';
         }).catch((error) => {
           console.error("Error getting user role:", error);
+          // Default to student dashboard if role can't be determined
+          window.location.href = 'std.html';
         });
+      } else {
+        console.log("User is not signed in");
       }
     });
   } catch (error) {
     console.error("Firebase initialization error:", error);
+    // Show user-friendly error message
+    alert("Authentication service is currently unavailable. Please try again later.");
   }
 
-  function scrollToChat() {
-    document.getElementById('chat').scrollIntoView({ behavior: 'smooth' });
-  }
-  
   function showLogin() {
     window.location.href = 'login.html';
   }
@@ -496,14 +505,18 @@ footer {
   
   function openChatbaseWidget() {
     const widget = document.getElementById('chatbase-widget-container');
-    widget.style.display = 'block';
-    document.getElementById('chatbase-iframe').src = 'https://www.chatbase.co/chatbot-iframe/your-chatbot-id';
+    if (widget) {
+      widget.style.display = 'block';
+      document.getElementById('chatbase-iframe').src = 'https://www.chatbase.co/chatbot-iframe/your-chatbot-id';
+    }
   }
   
   function closeChatbaseWidget() {
     const widget = document.getElementById('chatbase-widget-container');
-    widget.style.display = 'none';
-    document.getElementById('chatbase-iframe').src = 'about:blank';
+    if (widget) {
+      widget.style.display = 'none';
+      document.getElementById('chatbase-iframe').src = 'about:blank';
+    }
   }
 </script>
 </body>
