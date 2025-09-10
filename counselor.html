@@ -132,39 +132,27 @@
     // default
     switchView("dashboard");
   </script>
-   <script>
-    // Firebase configuration
-    const firebaseConfig = {
-         apiKey: "AIzaSyDXuMuxzI16MFE5qc58gqLBLUKzCgc3-R4",
-  authDomain: "mindcare-website-234d8.firebaseapp.com",
-  projectId: "mindcare-website-234d8",
-  storageBucket: "mindcare-website-234d8.firebasestorage.app",
-  messagingSenderId: "553199707478",
-  appId: "1:553199707478:web:f0706d1decf2cf6abee2f7"
-    };
+  <script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
 
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    
-    // Check authentication state
-    firebase.auth().onAuthStateChanged((user) => {
-        if (!user) {
-            // User is not signed in, redirect to login
-            window.location.href = 'login.html';
-        }
-    });
-    
-    function logout() {
-        firebase.auth().signOut().then(() => {
-            window.location.href = 'index.html';
-        }).catch((error) => {
-            console.error('Logout error:', error);
-        });
-    }
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyBhd1nA_w_g1DQFI61Cci0AIa7ODy7-mgI",
+    authDomain: "sih1-6ed00.firebaseapp.com",
+    projectId: "sih1-6ed00",
+    storageBucket: "sih1-6ed00.firebasestorage.app",
+    messagingSenderId: "503819383394",
+    appId: "1:503819383394:web:94ac77058b6b9f9b0f173b"
+  };
 
-    // ... (keep your existing functions) ...
-  </script>
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+</script>
 </body>
 </html>
+
 
 
