@@ -2,234 +2,225 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Dashboard</title>
-   <!-- Firebase SDK -->
+  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
   <style>
-    *{margin:0;padding:0;box-sizing:border-box;font-family:"Segoe UI",sans-serif}
-    body{background:#f4f6f9;display:flex;min-height:100vh;color:#333}
-    .sidebar{width:240px;background:linear-gradient(180deg,#2575fc,#6a11cb);color:white;padding:25px;display:flex;flex-direction:column;box-shadow:2px 0 12px rgba(0,0,0,0.1)}
-    .sidebar h2{margin-bottom:40px;text-align:center;font-size:22px}
-    .sidebar a{color:white;text-decoration:none;margin:12px 0;display:flex;align-items:center;padding:10px;border-radius:8px;transition:0.2s;cursor:pointer}
-    .sidebar a:hover{background:rgba(255,255,255,0.2)}
-    .sidebar a span{margin-left:10px}
-    .content{flex:1;padding:30px}
-    header{text-align:center;margin-bottom:30px}
-    .card{background:white;padding:20px;border-radius:14px;box-shadow:0 4px 18px rgba(0,0,0,0.08);margin-bottom:20px}
-    .card h3{margin-bottom:15px;color:#2575fc}
-    ul{list-style:none}
-    li{margin:10px 0;padding:12px;border:1px solid #eee;border-radius:8px;display:flex;justify-content:space-between;align-items:center}
-    button{background:#2575fc;color:white;border:none;padding:8px 14px;border-radius:6px;cursor:pointer;transition:0.2s}
-    button:hover{background:#1a5ac8}
-    .badge{padding:4px 10px;border-radius:10px;font-size:13px}
-    .available{background:#d4fcd4;color:#0b8e0b}
-    .busy{background:#fcd4d4;color:#b30000}
-    /* Popup */
-    .popup{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);
-           display:none;justify-content:center;align-items:center}
-    .popup-content{background:white;padding:25px;border-radius:12px;width:320px;text-align:center;animation:fadeIn 0.3s}
-    .popup h3{margin-bottom:15px;color:#2575fc}
-    .popup ul{list-style:none;margin-bottom:15px;text-align:left}
-    .popup ul li{margin:8px 0;display:flex;justify-content:space-between;align-items:center}
-    @keyframes fadeIn{from{opacity:0;transform:scale(0.9)}to{opacity:1;transform:scale(1)}}
+    body {
+      margin: 0;
+      font-family: "Segoe UI", sans-serif;
+      background: #f4f6f9;
+      color: #333;
+    }
+
+    /* Navbar */
+    .navbar {
+      background: #4a90e2;
+      padding: 15px 25px;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+    }
+
+    .navbar h2 {
+      margin: 0;
+    }
+
+    .profile img {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid white;
+      box-shadow: 0px 2px 6px rgba(0,0,0,0.3);
+      transition: transform 0.3s ease;
+    }
+
+    .profile img:hover {
+      transform: scale(1.1);
+    }
+
+    /* Sidebar Profile Menu (right side) */
+    .sidebar {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      top: 0;
+      right: 0;
+      background: #2c3e50;
+      overflow-x: hidden;
+      transition: 0.4s;
+      padding-top: 60px;
+      z-index: 1100;
+    }
+
+    .sidebar a {
+      padding: 12px 25px;
+      text-decoration: none;
+      font-size: 16px;
+      color: white;
+      display: block;
+      transition: 0.3s;
+    }
+
+    .sidebar a:hover {
+      background: #34495e;
+    }
+
+    .sidebar .closebtn {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      font-size: 30px;
+      color: white;
+      cursor: pointer;
+    }
+
+    /* Main content */
+    .container {
+      margin-top: 80px;
+      padding: 20px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    }
+
+    .card h3 {
+      margin-top: 0;
+      color: #4a90e2;
+    }
+
+    .btn {
+      display: inline-block;
+      background: #4a90e2;
+      color: white;
+      padding: 10px 15px;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background: #357abd;
+    }
+
+    video, audio {
+      width: 100%;
+      border-radius: 8px;
+      outline: none;
+    }
+
+    /* Responsive */
+    @media(max-width: 1000px) {
+      .container {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      }
+    }
   </style>
 </head>
 <body>
-  <div class="sidebar">
-    <h2>Admin</h2>
-    <a onclick="switchView('dashboard')">📊 <span>Dashboard</span></a>
-    <a onclick="switchView('requests')">📋 <span>Requests</span></a>
-    <a onclick="switchView('counselors')">👩‍🏫 <span>Counselors</span></a>
-    <a onclick="switchView('history')">📜 <span>History</span></a>
-    <a>🚪 <span>Logout</span></a>
+
+  <!-- Sidebar -->
+  <div id="mySidebar" class="sidebar">
+    <span class="closebtn" onclick="closeSidebar()">&times;</span>
+    <a href="#">My Profile</a>
+    <a href="#">Settings</a>
+    <a href="#" onclick="logout()">Logout</a>
   </div>
 
-  <div class="content">
-    <header><h2 id="pageTitle">Dashboard</h2></header>
-
-    <!-- Dashboard -->
-    <section id="dashboardView">
-      <div class="card">
-        <h3>Overview</h3>
-        <p>Total Requests: <b id="reqCount">0</b></p>
-        <p>Available Counselors: <b id="availCount">0</b></p>
-      </div>
-    </section>
-
-    <!-- Requests -->
-    <section id="requestsView" style="display:none;">
-      <div class="card">
-        <h3>Student Requests (Oldest First)</h3>
-        <ul id="requests"></ul>
-      </div>
-    </section>
-
-    <!-- Counselors -->
-    <section id="counselorsView" style="display:none;">
-      <div class="card">
-        <h3>Counselors</h3>
-        <ul id="counselorList"></ul>
-      </div>
-    </section>
-
-    <!-- History -->
-    <section id="historyView" style="display:none;">
-      <div class="card">
-        <h3>Visited History</h3>
-        <ul id="historyList"></ul>
-      </div>
-    </section>
-  </div>
-
-  <!-- Popup -->
-  <div class="popup" id="popup">
-    <div class="popup-content">
-      <h3>Assign Counselor</h3>
-      <p id="selectedStudent"></p>
-      <ul id="counselorOptions"></ul>
-      <button onclick="closePopup()">Cancel</button>
+  <!-- Navbar -->
+  <div class="navbar">
+    <h2>Admin Dashboard</h2>
+    <div class="profile" onclick="openSidebar()">
+      <img id="profileImage" src="https://static.vecteezy.com/system/resources/previews/021/770/056/non_2x/avatar-of-a-student-character-free-vector.jpg" alt="Profile Avatar">
     </div>
   </div>
 
-  <script>
-    let currentStudent="";
-    let counselors=[
-      {name:"Dr. Mehta",status:"available"},
-      {name:"Dr. Sharma",status:"busy"},
-      {name:"Dr. Riya",status:"available"}
-    ];
+  <!-- Main Dashboard -->
+  <div class="container">
 
-    // Preload some requests if empty
-    if(!localStorage.getItem("requests")){
-      let initial=[
-        {name:"Ronak",time:Date.now()-60000},
-        {name:"Aryan",time:Date.now()-40000},
-        {name:"Kavya",time:Date.now()-20000}
-      ];
-      localStorage.setItem("requests",JSON.stringify(initial));
-    }
-    if(!localStorage.getItem("history")) localStorage.setItem("history","[]");
+    <!-- Peer-to-Peer Support -->
+    <div class="card">
+      <h3>🤝 Peer-to-Peer Support</h3>
+      <p>Connect with your peers for support and collaboration.</p>
+      <a href="{% url "base:peer_chats" %}" class="btn">Start Chat</a>
+    </div>
 
-    function switchView(view){
-      document.getElementById("dashboardView").style.display="none";
-      document.getElementById("requestsView").style.display="none";
-      document.getElementById("counselorsView").style.display="none";
-      document.getElementById("historyView").style.display="none";
-      document.getElementById(view+"View").style.display="block";
-      document.getElementById("pageTitle").innerText=view.charAt(0).toUpperCase()+view.slice(1);
-      if(view==="requests") renderRequests();
-      if(view==="counselors") renderCounselors();
-      if(view==="history") renderHistory();
-      if(view==="dashboard") updateOverview();
-    }
+    <!-- Relaxing Video -->
+    <div class="card">
+      <h3>🎬 Relax with Videos</h3>
+      <video controls poster="https://img.youtube.com/vi/1ZYbU82GVz4/maxresdefault.jpg">
+        <source src="https://www.w3schools.com/howto/rain.mp4" type="video/mp4">
+        Your browser does not support video.
+      </video>
+      <p>Nature sounds & calming visuals 🌿</p>
+    </div>
 
-    function renderRequests(){
-      let reqs=JSON.parse(localStorage.getItem("requests")||"[]");
-      reqs.sort((a,b)=>a.time-b.time); // oldest first
-      let container=document.getElementById("requests");
-      container.innerHTML="";
-      if(reqs.length===0){
-        container.innerHTML="<li>No pending requests</li>";
-        return;
-      }
-      reqs.forEach(r=>{
-        let li=document.createElement("li");
-        li.innerHTML=`<span>${r.name} <small>(${new Date(r.time).toLocaleTimeString()})</small></span>
-                      <button onclick="openPopup('${r.name}')">Assign</button>`;
-        container.appendChild(li);
-      });
-      document.getElementById("reqCount").innerText=reqs.length;
-    }
+    <!-- Relaxing Audio -->
+    <div class="card">
+      <h3>🎵 Relaxing Audio</h3>
+      <audio controls>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mp3">
+        Your browser does not support audio.
+      </audio>
+      <p>Peaceful music to reduce stress 🎧</p>
+    </div>
 
-    function renderCounselors(){
-      let list=document.getElementById("counselorList");
-      list.innerHTML="";
-      counselors.forEach(c=>{
-        let li=document.createElement("li");
-        let statusClass=c.status==="available"?"available":"busy";
-        li.innerHTML=`${c.name} <span class="badge ${statusClass}">${c.status}</span>`;
-        list.appendChild(li);
-      });
-      let avail=counselors.filter(c=>c.status==="available").length;
-      document.getElementById("availCount").innerText=avail;
-    }
+    <!-- Meditation Website -->
+    <div class="card">
+      <h3>🧘 Meditation Zone</h3>
+      <p>Guided meditation to calm your mind.</p>
+      <a href="https://www.headspace.com/meditation" target="_blank" class="btn">Go to Meditation</a>
+    </div>
 
-    function renderHistory(){
-      let history=JSON.parse(localStorage.getItem("history")||"[]");
-      let list=document.getElementById("historyList");
-      list.innerHTML="";
-      if(history.length===0){
-        list.innerHTML="<li>No history yet</li>";
-        return;
-      }
-      history.forEach(h=>{
-        let li=document.createElement("li");
-        li.textContent=`${h.student} → ${h.counselor} at ${new Date(h.time).toLocaleTimeString()}`;
-        list.appendChild(li);
-      });
-    }
+    <!-- Notes & Resources -->
+    <div class="card">
+      <h3>📚 Notes & Resources</h3>
+      <p>Access study materials & useful guides.</p>
+      <a href="#" class="btn">View Notes</a>
+    </div>
 
-    function openPopup(student){
-      currentStudent=student;
-      document.getElementById("selectedStudent").innerText="Assigning: "+student;
-      let ul=document.getElementById("counselorOptions");
-      ul.innerHTML="";
-      counselors.forEach(c=>{
-        let li=document.createElement("li");
-        if(c.status==="available"){
-          li.innerHTML=`${c.name} <button onclick="assign('${c.name}')">Select</button>`;
-        }else{
-          li.innerHTML=`${c.name} <button disabled>Busy</button>`;
-        }
-        ul.appendChild(li);
-      });
-      document.getElementById("popup").style.display="flex";
-    }
+    <!-- Upcoming Events -->
+    <div class="card">
+      <h3>📅 Upcoming Events</h3>
+      <p>Stay updated with classes & college events.</p>
+      <a href="#" class="btn">Check Events</a>
+    </div>
 
-    function closePopup(){
-      document.getElementById("popup").style.display="none";
-    }
+  </div>
 
-    function assign(counselorName){
-      // remove student from requests
-      let reqs=JSON.parse(localStorage.getItem("requests")||"[]");
-      reqs=reqs.filter(r=>r.name!==currentStudent);
-      localStorage.setItem("requests",JSON.stringify(reqs));
-      // update counselor status
-      counselors=counselors.map(c=>{
-        if(c.name===counselorName) return {...c,status:"busy"};
-        return c;
-      });
-      // save history
-      let history=JSON.parse(localStorage.getItem("history")||"[]");
-      history.unshift({student:currentStudent,counselor:counselorName,time:Date.now()});
-      localStorage.setItem("history",JSON.stringify(history));
-      closePopup();
-      renderRequests();
-      renderCounselors();
-      renderHistory();
-      updateOverview();
-      currentStudent="";
-    }
-
-    function updateOverview(){
-      renderRequests();
-      renderCounselors();
-    }
-
-    // initial
-    switchView("dashboard");
-  </script>
   <script>
     // Firebase configuration
     const firebaseConfig = {
-        apiKey: "AIzaSyDXuMuxzI16MFE5qc58gqLBLUKzCgc3-R4",
-  authDomain: "mindcare-website-234d8.firebaseapp.com",
-  projectId: "mindcare-website-234d8",
-  storageBucket: "mindcare-website-234d8.firebasestorage.app",
-  messagingSenderId: "553199707478",
-  appId: "1:553199707478:web:f0706d1decf2cf6abee2f7"
+      apiKey: "AIzaSyBhd1nA_w_g1DQFI61Cci0AIa7ODy7-mgI",
+      authDomain: "sih1-6ed00.firebaseapp.com",
+      projectId: "sih1-6ed00",
+      storageBucket: "sih1-6ed00.firebasestorage.app",
+      messagingSenderId: "503819383394",
+      appId: "1:503819383394:web:94ac77058b6b9f9b0f173b"
     };
 
     // Initialize Firebase
@@ -240,6 +231,10 @@
         if (!user) {
             // User is not signed in, redirect to login
             window.location.href = 'login.html';
+        } else {
+            // User is signed in, display user info
+            document.getElementById('profileImage').src = user.photoURL || 
+                'https://static.vecteezy.com/system/resources/previews/021/770/056/non_2x/avatar-of-a-student-character-free-vector.jpg';
         }
     });
     
@@ -251,8 +246,12 @@
         });
     }
 
-    // ... (keep your existing functions) ...
+    function openSidebar() {
+      document.getElementById("mySidebar").style.width = "220px";
+    }
+    function closeSidebar() {
+      document.getElementById("mySidebar").style.width = "0";
+    }
   </script>
 </body>
 </html>
-
