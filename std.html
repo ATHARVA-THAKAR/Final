@@ -147,14 +147,14 @@
     <span class="closebtn" onclick="closeSidebar()">&times;</span>
     <a href="#">My Profile</a>
     <a href="#">Settings</a>
-    <a href="#">Logout</a>
+    <a href="#" onclick="logout()">Logout</a>
   </div>
 
   <!-- Navbar -->
   <div class="navbar">
     <h2>Student Dashboard</h2>
     <div class="profile" onclick="openSidebar()">
-      <img src="https://static.vecteezy.com/system/resources/previews/021/770/056/non_2x/avatar-of-a-student-character-free-vector.jpg" alt="Profile Avatar">
+      <img id="profileImage" src="https://static.vecteezy.com/system/resources/previews/021/770/056/non_2x/avatar-of-a-student-character-free-vector.jpg" alt="Profile Avatar">
     </div>
   </div>
 
@@ -212,22 +212,14 @@
   </div>
 
   <script>
-    function openSidebar() {
-      document.getElementById("mySidebar").style.width = "220px";
-    }
-    function closeSidebar() {
-      document.getElementById("mySidebar").style.width = "0";
-    }
-  </script>
-<script>
     // Firebase configuration
     const firebaseConfig = {
-         apiKey: "AIzaSyDXuMuxzI16MFE5qc58gqLBLUKzCgc3-R4",
-  authDomain: "mindcare-website-234d8.firebaseapp.com",
-  projectId: "mindcare-website-234d8",
-  storageBucket: "mindcare-website-234d8.firebasestorage.app",
-  messagingSenderId: "553199707478",
-  appId: "1:553199707478:web:f0706d1decf2cf6abee2f7"
+      apiKey: "AIzaSyBhd1nA_w_g1DQFI61Cci0AIa7ODy7-mgI",
+      authDomain: "sih1-6ed00.firebaseapp.com",
+      projectId: "sih1-6ed00",
+      storageBucket: "sih1-6ed00.firebasestorage.app",
+      messagingSenderId: "503819383394",
+      appId: "1:503819383394:web:94ac77058b6b9f9b0f173b"
     };
 
     // Initialize Firebase
@@ -262,5 +254,3 @@
   </script>
 </body>
 </html>
-
-
