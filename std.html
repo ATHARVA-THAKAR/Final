@@ -3,219 +3,37 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Student Dashboard</title>
+  <title>MindCare - Student Dashboard</title>
   <style>
-    body {
-      margin: 0;
-      font-family: "Segoe UI", sans-serif;
-      background: #f4f6f9;
-      color: #333;
-    }
-
-    /* Navbar */
-    .navbar {
-      background: #4a90e2;
-      padding: 15px 25px;
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f9f9f9; }
+    header {
+      background: #007bff;
       color: white;
+      padding: 15px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 1000;
     }
-
-    .navbar h2 {
-      margin: 0;
-    }
-
-    .profile img {
-      width: 45px;
-      height: 45px;
-      border-radius: 50%;
-      cursor: pointer;
-      border: 2px solid white;
-      box-shadow: 0px 2px 6px rgba(0,0,0,0.3);
-      transition: transform 0.3s ease;
-    }
-
-    .profile img:hover {
-      transform: scale(1.1);
-    }
-
-    /* Sidebar Profile Menu (right side) */
-    .sidebar {
-      height: 100%;
-      width: 0;
-      position: fixed;
-      top: 0;
-      right: 0;
-      background: #2c3e50;
-      overflow-x: hidden;
-      transition: 0.4s;
-      padding-top: 60px;
-      z-index: 1100;
-    }
-
-    .sidebar a {
-      padding: 12px 25px;
-      text-decoration: none;
-      font-size: 16px;
+    header h2 { margin: 0; }
+    .btn-logout {
+      background: #ff4d4d;
+      border: none;
+      padding: 8px 16px;
       color: white;
-      display: block;
-      transition: 0.3s;
-    }
-
-    .sidebar a:hover {
-      background: #34495e;
-    }
-
-    .sidebar .closebtn {
-      position: absolute;
-      top: 20px;
-      left: 20px;
-      font-size: 30px;
-      color: white;
-      cursor: pointer;
-    }
-
-    /* Main content */
-    .container {
-      margin-top: 80px;
-      padding: 20px;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-    }
-
-    .card {
-      background: white;
-      border-radius: 12px;
-      padding: 20px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      text-align: center;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-    }
-
-    .card h3 {
-      margin-top: 0;
-      color: #4a90e2;
-    }
-
-    .btn {
-      display: inline-block;
-      background: #4a90e2;
-      color: white;
-      padding: 10px 15px;
       border-radius: 6px;
-      text-decoration: none;
-      transition: 0.3s;
+      cursor: pointer;
     }
-
-    .btn:hover {
-      background: #357abd;
-    }
-
-    video, audio {
-      width: 100%;
-      border-radius: 8px;
-      outline: none;
-    }
-
-    /* Responsive */
-    @media(max-width: 1000px) {
-      .container {
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      }
-    }
+    .btn-logout:hover { background: #cc0000; }
+    .content { padding: 20px; }
   </style>
 </head>
 <body>
-
-  <!-- Sidebar -->
-  <div id="mySidebar" class="sidebar">
-    <span class="closebtn" onclick="closeSidebar()">&times;</span>
-    <a href="#">My Profile</a>
-    <a href="#">Settings</a>
-    <a href="#">Logout</a>
-  </div>
-
-  <!-- Navbar -->
-  <div class="navbar">
+  <header>
     <h2>Student Dashboard</h2>
-    <div class="profile" onclick="openSidebar()">
-      <img src="https://static.vecteezy.com/system/resources/previews/021/770/056/non_2x/avatar-of-a-student-character-free-vector.jpg" alt="Profile Avatar">
-    </div>
+    <button class="btn-logout" onclick="window.location.href='index.html'">Logout</button>
+  </header>
+  <div class="content">
+    <p>Welcome, Student! Here you can access your resources and counseling options.</p>
   </div>
-
-  <!-- Main Dashboard -->
-  <div class="container">
-
-    <!-- Peer-to-Peer Support -->
-    <div class="card">
-      <h3>🤝 Peer-to-Peer Support</h3>
-      <p>Connect with your peers for support and collaboration.</p>
-      <a href="{% url "base:peer_chats" %}" class="btn">Start Chat</a>
-    </div>
-
-    <!-- Relaxing Video -->
-    <div class="card">
-      <h3>🎬 Relax with Videos</h3>
-      <video controls poster="https://img.youtube.com/vi/1ZYbU82GVz4/maxresdefault.jpg">
-        <source src="https://www.w3schools.com/howto/rain.mp4" type="video/mp4">
-        Your browser does not support video.
-      </video>
-      <p>Nature sounds & calming visuals 🌿</p>
-    </div>
-
-    <!-- Relaxing Audio -->
-    <div class="card">
-      <h3>🎵 Relaxing Audio</h3>
-      <audio controls>
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mp3">
-        Your browser does not support audio.
-      </audio>
-      <p>Peaceful music to reduce stress 🎧</p>
-    </div>
-
-    <!-- Meditation Website -->
-    <div class="card">
-      <h3>🧘 Meditation Zone</h3>
-      <p>Guided meditation to calm your mind.</p>
-      <a href="https://www.headspace.com/meditation" target="_blank" class="btn">Go to Meditation</a>
-    </div>
-
-    <!-- Notes & Resources -->
-    <div class="card">
-      <h3>📚 Notes & Resources</h3>
-      <p>Access study materials & useful guides.</p>
-      <a href="#" class="btn">View Notes</a>
-    </div>
-
-    <!-- Upcoming Events -->
-    <div class="card">
-      <h3>📅 Upcoming Events</h3>
-      <p>Stay updated with classes & college events.</p>
-      <a href="#" class="btn">Check Events</a>
-    </div>
-
-  </div>
-
-  <script>
-    function openSidebar() {
-      document.getElementById("mySidebar").style.width = "220px";
-    }
-    function closeSidebar() {
-      document.getElementById("mySidebar").style.width = "0";
-    }
-  </script>
-
 </body>
 </html>
