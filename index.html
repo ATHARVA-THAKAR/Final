@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>CampusMind - College Mental Health Support</title>
+  <title>MindCare - College Mental Health Support</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
@@ -451,31 +451,50 @@ footer {
 </script>
 
 <script>
-        // Firebase configuration
-        const firebaseConfig = {
-          apiKey: "AIzaSyBhd1nA_w_g1DQFI61Cci0AIa7ODy7-mgI",
-          authDomain: "sih1-6ed00.firebaseapp.com",
-          projectId: "sih1-6ed00",
-          storageBucket: "sih1-6ed00.firebasestorage.app",
-          messagingSenderId: "503819383394",
-          appId: "1:503819383394:web:94ac77058b6b9f9b0f173b"
-        };
+  // Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyBhd1nA_w_g1DQFI61Cci0AIa7ODy7-mgI",
+    authDomain: "sih1-6ed00.firebaseapp.com",
+    projectId: "sih1-6ed00",
+    storageBucket: "sih1-6ed00.firebasestorage.app",
+    messagingSenderId: "503819383394",
+    appId: "1:503819383394:web:94ac77058b6b9f9b0f173b"
+  };
 
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        
-        // Check if user is already logged in
-        firebase.auth().onAuthStateChanged((user) => {
-            if (user) {
-                // User is signed in, redirect to appropriate dashboard
-                user.getIdTokenResult().then((idTokenResult) => {
-                    const role = idTokenResult.claims.role || 'student';
-                    window.location.href = role + '.html';
-                }).catch(() => {
-                    window.location.href = 'std.html';
-                });
-            }
+  // Initialize Firebase with better error handling
+  try {
+    // Check if Firebase is already initialized
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+      console.log("Firebase initialized successfully");
+    } else {
+      firebase.app(); // if already initialized, use that one
+      console.log("Firebase already initialized");
+    }
+    
+    // Check if user is already logged in
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        console.log("User is signed in:", user.email);
+        // User is signed in, redirect based on role
+        user.getIdTokenResult().then((idTokenResult) => {
+          const role = idTokenResult.claims.role || 'student';
+          window.location.href = role + '.html';
+        }).catch((error) => {
+          console.error("Error getting user role:", error);
+          // Default to student dashboard if role can't be determined
+          window.location.href = 'std.html';
         });
+      } else {
+        console.log("User is not signed in");
+      }
+    });
+  } catch (error) {
+    console.error("Firebase initialization error:", error);
+    // Show user-friendly error message
+    alert("Authentication service is currently unavailable. Please try again later.");
+  }
+
   function showLogin() {
     window.location.href = 'login.html';
   }
