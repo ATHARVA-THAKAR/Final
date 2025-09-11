@@ -5,8 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MindCare - Login</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <!-- Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
     <style>
         :root {
             --primary: #6C63FF;
@@ -15,6 +17,8 @@
             --light: #ffffff;
             --dark: #2d3436;
             --emergency: #ff6b6b;
+            --error: #ff4757;
+            --success: #2ed573;
         }
 
         * {
@@ -25,7 +29,7 @@
         }
 
         body {
-            background: linear-gradient(rgba(24, 135, 12, 0.653), rgba(15, 183, 26, 0.637));
+            background: linear-gradient(270deg, var(--primary), var(--secondary), var(--accent));
             background-size: 600% 600%;
             animation: gradientShift 15s ease infinite;
             color: var(--dark);
@@ -45,11 +49,11 @@
         }
 
         .login-container {
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.9);
             border-radius: 20px;
             padding: 40px;
             width: 100%;
-            max-width: 500px;
+            max-width: 450px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
             text-align: center;
         }
@@ -72,50 +76,12 @@
         h2 {
             color: var(--primary);
             margin-bottom: 20px;
-        }
-
-        .role-selection {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-bottom: 25px;
-        }
-
-        .role-btn {
-            padding: 15px;
-            border: 2px solid var(--primary);
-            border-radius: 10px;
-            background: white;
-            color: var(--primary);
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .role-btn:hover {
-            background: var(--primary);
-            color: white;
-            transform: translateY(-3px);
-            box-shadow: 极速赛车开奖结果
-0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .role-btn.selected {
-            background: var(--primary);
-            color: white;
-        }
-
-        .login-form {
-            display: none;
-            text-align: left;
+            text-align: center;
         }
 
         .form-group {
             margin-bottom: 20px;
+            text-align: left;
         }
 
         .form-group label {
@@ -131,6 +97,29 @@
             border: 1px solid #ddd;
             border-radius: 8px;
             font-size: 16px;
+        }
+
+        .remember-forgot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .remember {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .forgot-password {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .forgot-password:hover {
+            text-decoration: underline;
         }
 
         .login-btn {
@@ -152,16 +141,69 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
-        .back-btn {
-            margin-top: 15px;
-            background: transparent;
-            border: none;
-            color: #777;
-            cursor: pointer;
+        .divider {
+            margin: 25px 0;
+            height: 1px;
+            background: #ddd;
+            position: relative;
         }
 
-        .back-btn:hover {
+        .divider span {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            padding: 0 15px;
+            color: #777;
+        }
+
+        .social-login {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .social-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .social-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .google-btn {
+            color: #DB4437;
+        }
+
+        .facebook-btn {
+            color: #4267B2;
+        }
+
+        .signup-redirect {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .signup-redirect a {
             color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .signup-redirect a:hover {
+            text-decoration: underline;
         }
 
         .emergency-contact {
@@ -171,13 +213,22 @@
             padding: 12px;
             font-weight: 600;
             width: 100%;
-            max-width: 500px;
+            max-width: 450px;
             margin-top: 20px;
             border-radius: 10px;
         }
 
         .error-message {
-            background: #ff6b6b;
+            background: var(--error);
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .success-message {
+            background: var(--success);
             color: white;
             padding: 12px;
             border-radius: 8px;
@@ -193,91 +244,156 @@
             <h1>MindCare</h1>
         </div>
         
-        <h2>Login to Your Account</h2>
+        <h2>Welcome Back</h2>
         
-        <div id="error-message" class="error-message"></div>
+        <div class="error-message" id="errorMessage"></div>
+        <div class="success-message" id="successMessage"></div>
         
-        <div class="login-form" id="loginForm">
+        <form id="loginForm">
             <div class="form-group">
                 <label for="email">Email</label>
-                <input type="email" id="email" placeholder="Enter your email">
+                <input type="email" id="email" placeholder="Enter your email" required>
             </div>
+            
             <div class="form-group">
                 <label for="password">Password</label>
-                <input type="password" id="password" placeholder="Enter your password">
+                <input type="password" id="password" placeholder="Enter your password" required>
             </div>
-            <button class="login-btn" onclick="login()">Login</button>
             
-            <div style="text-align: center; margin-top: 20px;">
-                <p>Don't have an account? <a href="signup.html" style="color: var(--primary); font-weight: 600;">Sign up here</a></p>
+            <div class="remember-forgot">
+                <div class="remember">
+                    <input type="checkbox" id="rememberMe">
+                    <label for="rememberMe">Remember me</label>
+                </div>
+                <a href="#" class="forgot-password">Forgot Password?</a>
             </div>
+            
+            <button type="button" class="login-btn" onclick="login()">Log In</button>
+        </form>
+        
+        <div class="divider"><span>Or</span></div>
+        
+        <div class="social-login">
+            <div class="social-btn google-btn" onclick="signInWithGoogle()">
+                <i class="fab fa-google"></i>
+            </div>
+            <div class="social-btn facebook-btn" onclick="signInWithFacebook()">
+                <i class="fab fa-facebook-f"></i>
+            </div>
+        </div>
+        
+        <div class="signup-redirect">
+            Don't have an account? <a href="signup.html">Sign Up</a>
         </div>
     </div>
     
     <div class="emergency-contact">
-        <p>If you're in crisis, please call the National Suicide Prevention Lifeline at <strong>1-800-273-8255</strong> or text <strong>HOME</strong> to <strong>741741</strong>.</p>
+        <i class="fas fa-phone-alt"></i> Need immediate help? Call 1-800-273-8255
     </div>
-
+    
     <script>
-        // Supabase initialization
+        // Supabase configuration
         const supabaseUrl = 'https://tztueszwcnpimovuqovv.supabase.co';
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6Ik极速赛车开奖结果
-pXVCJ9.eyJpc3Mi极速赛车开奖结果
-OiJzdXBhYmFzZSIsInJlZiI6InR6dHVlc3p3Y25waW1vdnVxb3Z2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc1Mjg0NzYsImV4cCI6MjA3MzEwNDQ3Nn0.-C1x4SNmrWZ2OGuc23Kwsjy极速赛车开奖结果
-OkB9MhiqlFFj8O9m5d08';
-        const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR6dHVlc3p3Y25waW1vdnVxb3Z2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc1Mjg0NzYsImV4cCI6MjA3MzEwNDQ3Nn0.-C1x4SNmrWZ2OGuc23KwsjyOkB9MhiqlFFj8O9m5d08';
         
-        // Show login form immediately (no role selection needed)
-        document.getElementById('loginForm').style.display = 'block';
+        // Initialize Supabase
+        const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
         
         async function login() {
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-            const errorElement = document.getElementById('error-message');
             
-            // Simple validation
+            const errorMessage = document.getElementById('errorMessage');
+            const successMessage = document.getElementById('successMessage');
+            
+            // Reset messages
+            errorMessage.style.display = 'none';
+            successMessage.style.display = 'none';
+            
+            // Validation
             if (!email || !password) {
-                errorElement.textContent = 'Please enter both email and password';
-                errorElement.style.display = 'block';
+                errorMessage.textContent = 'Please enter both email and password';
+                errorMessage.style.display = 'block';
                 return;
             }
             
             try {
-                // Supabase authentication
+                // Sign in with Supabase
                 const { data, error } = await supabase.auth.signInWithPassword({
                     email: email,
                     password: password
                 });
                 
-                if (error) {
-                    errorElement.textContent = error.message;
-                    errorElement.style.display = 'block';
-                } else {
-                    // Signed in successfully
-                    console.log("User logged in:", data.user);
-                    
-                    // Redirect to dashboard
-                    window.location.href = 'dashboard.html';
-                }
+                if (error) throw error;
+                
+                successMessage.textContent = 'Login successful! Redirecting...';
+                successMessage.style.display = 'block';
+                
+                // Get user role from metadata
+                const userRole = data.user.user_metadata.role || 'student';
+                
+                // Redirect based on role
+                setTimeout(() => {
+                    if (userRole === 'admin') {
+                        window.location.href = 'admin_dashboard.html';
+                    } else if (userRole === 'counselor') {
+                        window.location.href = 'counselor_dashboard.html';
+                    } else {
+                        window.location.href = 'std.html';
+                    }
+                }, 1500);
+                
             } catch (error) {
-                errorElement.textContent = 'An unexpected error occurred. Please try again.';
-                errorElement.style.display = 'block';
-                console.error('Login error:', error);
+                errorMessage.textContent = error.message;
+                errorMessage.style.display = 'block';
+            }
+        }
+        
+        async function signInWithGoogle() {
+            try {
+                const { data, error } = await supabase.auth.signInWithOAuth({
+                    provider: 'google',
+                    options: {
+                        redirectTo: window.location.origin + '/std.html'
+                    }
+                });
+                
+                if (error) throw error;
+            } catch (error) {
+                document.getElementById('errorMessage').textContent = error.message;
+                document.getElementById('errorMessage').style.display = 'block';
+            }
+        }
+        
+        async function signInWithFacebook() {
+            try {
+                const { data, error } = await supabase.auth.signInWithOAuth({
+                    provider: 'facebook',
+                    options: {
+                        redirectTo: window.location.origin + '/std.html'
+                    }
+                });
+                
+                if (error) throw error;
+            } catch (error) {
+                document.getElementById('errorMessage').textContent = error.message;
+                document.getElementById('errorMessage').style.display = 'block';
             }
         }
         
         // Check if user is already logged in
         supabase.auth.getSession().then(({ data: { session } }) => {
             if (session) {
-                // User is already signed in, redirect to dashboard
-                window.location.href = 'dashboard.html';
-            }
-        });
-        
-        // Allow submitting form with Enter key
-        document.getElementById('password').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                login();
+                const userRole = session.user.user_metadata.role || 'student';
+                
+                // Redirect based on role
+                if (userRole === 'admin') {
+                    window.location.href = 'admin_dashboard.html';
+                } else if (userRole === 'counselor') {
+                    window.location.href = 'counselor_dashboard.html';
+                } else {
+                    window.location.href = 'std.html';
+                }
             }
         });
     </script>
