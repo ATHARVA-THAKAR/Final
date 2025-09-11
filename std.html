@@ -164,7 +164,7 @@
     <div class="card">
       <h3>🤝 Peer-to-Peer Support</h3>
       <p>Connect with your peers for support and collaboration.</p>
-      <a href="#" class="btn">Start Chat</a>
+      <a href="{% url "base:peer_chats" %}" class="btn">Start Chat</a>
     </div>
 
     <!-- Relaxing Video -->
@@ -211,41 +211,44 @@
   </div>
 
   <script>
-    // Supabase initialization
+    // Supabase configuration
     const supabaseUrl = 'https://tztueszwcnpimovuqovv.supabase.co';
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZEIsInJlZiI6InR6dHVlc3p3Y25waW1vdnVxb3Z2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc1Mjg0NzYsImV4cCI6MjA3MzEwNDQ3Nn0.-C1x4SNmrWZ2OGuc23KwsjyOkB9MhiqlFFj8O9m5d08';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR6dHVlc3p3Y25waW1vdnVxb3Z2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc1Mjg0NzYsImV4cCI6MjA3MzEwNDQ3Nn0.-C1x4SNmrWZ2OGuc23KwsjyOkB9MhiqlFFj8O9m5d08';
+    
+    // Initialize Supabase
     const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
     
     // Check authentication state
-    async function checkAuth() {
-      const { data: { session } } = await supabase.auth.getSession();
-      
+    supabase.auth.getSession().then(({ data: { session } }) => {
       if (!session) {
         // User is not signed in, redirect to login
         window.location.href = 'login.html';
       } else {
         // User is signed in, display user info
         const user = session.user;
-        document.getElementById('profileImage').src = user.user_metadata?.avatar_url || 
+        document.getElementById('profileImage').src = user.user_metadata.avatar_url || 
             'https://static.vecteezy.com/system/resources/previews/021/770/056/non_2x/avatar-of-a-student-character-free-vector.jpg';
       }
-    }
+    });
     
-    checkAuth();
-    
-    async function logout() {
-      const { error } = await supabase.auth.signOut();
-      if (error) {
-        console.error('Logout error:', error);
-      } else {
-        window.location.href = 'index.html';
+    // Listen for auth changes
+    supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_OUT') {
+        window.location.href = 'login.html';
       }
+    });
+    
+    function logout() {
+      supabase.auth.signOut().then(() => {
+        window.location.href = 'index.html';
+      }).catch((error) => {
+        console.error('Logout error:', error);
+      });
     }
 
     function openSidebar() {
       document.getElementById("mySidebar").style.width = "220px";
     }
-    
     function closeSidebar() {
       document.getElementById("mySidebar").style.width = "0";
     }
