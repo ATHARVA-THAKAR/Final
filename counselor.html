@@ -4,10 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Counselor Dashboard</title>
-  <!-- Firebase SDK -->
-  <!-- Firebase SDK -->
-  <script src=" "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js""></script>
-  <script src=" "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js""></script>
+  <!-- Supabase SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     body {
       margin: 0;
@@ -65,7 +63,7 @@
 
     .sidebar a {
       padding: 12px 25px;
-      text-decoration: none;
+      test-decoration: none;
       font-size: 16px;
       color: white;
       display: block;
@@ -166,7 +164,7 @@
     <div class="card">
       <h3>🤝 Peer-to-Peer Support</h3>
       <p>Connect with your peers for support and collaboration.</p>
-      <a href="{% url "base:peer_chats" %}" class="btn">Start Chat</a>
+      <a href="#" class="btn">Start Chat</a>
     </div>
 
     <!-- Relaxing Video -->
@@ -213,46 +211,44 @@
   </div>
 
   <script>
-    // Firebase configuration
-    const firebaseConfig = {
-      apiKey: "AIzaSyBhd1nA_w_g1DQFI61Cci0AIa7ODy7-mgI",
-      authDomain: "sih1-6ed00.firebaseapp.com",
-      projectId: "sih1-6ed00",
-      storageBucket: "sih1-6ed00.firebasestorage.app",
-      messagingSenderId: "503819383394",
-      appId: "1:503819383394:web:94ac77058b6b9f9b0f173b"
-    };
-
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
+    // Supabase initialization
+    const supabaseUrl = 'https://tztueszwcnpimovuqovv.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR6dHVlc3p3Y25waW1vdnVxb3Z2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc1Mjg0NzYsImV4cCI6MjA3MzEwNDQ3Nn0.-C1x4SNmrWZ2OGuc23KwsjyOkB9MhiqlFFj8O9m5d08';
+    const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
     
     // Check authentication state
-    firebase.auth().onAuthStateChanged((user) => {
-        if (!user) {
-            // User is not signed in, redirect to login
-            window.location.href = 'login.html';
-        } else {
-            // User is signed in, display user info
-            document.getElementById('profileImage').src = user.photoURL || 
-                'https://static.vecteezy.com/system/resources/previews/021/770/056/non_2x/avatar-of-a-student-character-free-vector.jpg';
-        }
-    });
+    async function checkAuth() {
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (!session) {
+        // User is not signed in, redirect to login
+        window.location.href = 'login.html';
+      } else {
+        // User is signed in, display user info
+        const user = session.user;
+        document.getElementById('profileImage').src = user.user_metadata?.avatar_url || 
+            'https://static.vecteezy.com/system/resources/previews/021/770/056/non_2x/avatar-of-a-student-character-free-vector.jpg';
+      }
+    }
     
-    function logout() {
-        firebase.auth().signOut().then(() => {
-            window.location.href = 'index.html';
-        }).catch((error) => {
-            console.error('Logout error:', error);
-        });
+    checkAuth();
+    
+    async function logout() {
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        console.error('Logout error:', error);
+      } else {
+        window.location.href = 'index.html';
+      }
     }
 
     function openSidebar() {
       document.getElementById("mySidebar").style.width = "220px";
     }
+    
     function closeSidebar() {
       document.getElementById("mySidebar").style.width = "0";
     }
   </script>
 </body>
 </html>
-
