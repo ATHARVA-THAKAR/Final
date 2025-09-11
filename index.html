@@ -340,6 +340,34 @@ footer {
   overflow: hidden;
   box-shadow: 0 5px 25px rgba(0,0,0,0.2);
 }
+
+/* Chat Toggle Button */
+.chat-toggle {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(45deg, var(--primary), var(--secondary));
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  z-index: 999;
+  transition: all 0.3s ease;
+}
+
+.chat-toggle:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 25px rgba(0,0,0,0.4);
+}
+
+.chat-toggle i {
+  font-size: 24px;
+}
   </style>
 </head>
 <body>
@@ -431,63 +459,113 @@ footer {
   <iframe id="chatbase-iframe" width="100%" height="100%" frameborder="0"></iframe>
 </div>
 
+<!-- Chat Toggle Button -->
+<div class="chat-toggle" onclick="toggleChatbaseWidget()">
+  <i class="fas fa-comments"></i>
+</div>
+
 <!-- Chatbase Integration Code -->
 <script>
-(function(){
-  if(!window.chatbase||window.chatbase("getState")!=="initialized"){
-    window.chatbase=(...arguments)=>{if(!window.chatbase.q){window.chatbase.q=[]}window.chatbase.q.push(arguments)};
-    window.chatbase=new Proxy(window.chatbase,{get(target,prop){if(prop==="q"){return target.q}return(...args)=>target(prop,...args)}});
-  }
-  const onLoad=function(){
-    const script=document.createElement("script");
-    script.src="https://www.chatbase.co/embed.min.js";
-    script.setAttribute("chatbotId","tztueszwcnpimovuqovv");
-    script.setAttribute("domain","www.chatbase.co");
-    script.defer=true;
-    document.head.appendChild(script);
-  };
-  if(document.readyState==="complete"){onLoad()}
-  else{window.addEventListener("load",onLoad)}
-})();
+  // Initialize Chatbase
+  (function(){
+    if(!window.chatbase||window.chatbase("getState")!=="initialized"){
+      window.chatbase=(...arguments)=>{if(!window.chatbase.q){window.chatbase.q=[]}window.chatbase.q.push(arguments)};
+      window.chatbase=new Proxy(window.chatbase,{get(target,prop){if(prop==="q"){return target.q}return(...args)=>target(prop,...args)}});
+    }
+    const onLoad=function(){
+      const script=document.createElement("script");
+      script.src="https://www.chatbase.co/embed.min.js";
+      script.setAttribute("chatbotId","tztueszwcnpimovuqovv");
+      script.setAttribute("domain","www.chatbase.co");
+      script.defer=true;
+      document.head.appendChild(script);
+    };
+    if(document.readyState==="complete"){onLoad()}
+    else{window.addEventListener("load",onLoad)}
+  })();
 </script>
 
 <script>
-// Supabase initialization
-const supabaseUrl = 'https://tztueszwcnpimovuqovv.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR6dHVlc3p3Y25waW1vdnVxb3Z2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc1Mjg0NzYsImV4cCI6MjA3MzEwNDQ3Nn0.-C1x4SNmrWZ2OGuc23KwsjyOkB9MhiqlFFj8O9m5d08';
-const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+  // Supabase configuration
+  const supabaseUrl = 'https://tztueszwcnpimovuqovv.supabase.co';
+  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR6dHVlc3p3Y25waW1vdnVxb3Z2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc1Mjg0NzYsImV4cCI6MjA3MzEwNDQ3Nn0.-C1x4SNmrWZ2OGuc23KwsjyOkB9MhiqlFFj8O9m5d08';
 
-// Chatbase widget control
-function openChatbaseWidget() {
-  const widget = document.getElementById('chatbase-widget-container');
-  if (widget.style.display === 'block') {
-    widget.style.display = 'none';
-  } else {
+  // Initialize Firebase with better error handling
+  try {
+    // Check if Firebase is already initialized
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+      console.log("Firebase initialized successfully");
+    } else {
+      firebase.app(); // if already initialized, use that one
+      console.log("Firebase already initialized");
+    }
+    
+    // Check if user is already logged in
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        console.log("User is signed in:", user.email);
+        // User is signed in, redirect based on role
+        user.getIdTokenResult().then((idTokenResult) => {
+          const role = idTokenResult.claims.role || 'student';
+          window.location.href = role + '.html';
+        }).catch((error) => {
+          console.error("Error getting user role:", error);
+          // Default to student dashboard if role can't be determined
+          window.location.href = 'std.html';
+        });
+      } else {
+        console.log("User is not signed in");
+      }
+    });
+  } catch (error) {
+    console.error("Firebase initialization error:", error);
+    // Show user-friendly error message
+    alert("Authentication service is currently unavailable. Please try again later.");
+  }
+
+  function showLogin() {
+    window.location.href = 'login.html';
+  }
+  
+  function showSignup() {
+    window.location.href = 'signup.html';
+  }
+  
+  // Chatbase widget control
+  function openChatbaseWidget() {
+    const widget = document.getElementById('chatbase-widget-container');
     widget.style.display = 'block';
     document.getElementById('chatbase-iframe').src = 'https://www.chatbase.co/chatbot-iframe/tztueszwcnpimovuqovv';
   }
-}
-
-// Close widget when clicking outside
-document.addEventListener('click', function(event) {
-  const widget = document.getElementById('chatbase-widget-container');
-  if (widget.style.display === 'block' && 
-      !event.target.closest('#chatbase-widget-container') && 
-      !event.target.closest('.btn-primary')) {
-    widget.style.display = 'none';
+  
+  function toggleChatbaseWidget() {
+    const widget = document.getElementById('chatbase-widget-container');
+    if (widget.style.display === 'block') {
+      widget.style.display = 'none';
+    } else {
+      widget.style.display = 'block';
+      document.getElementById('chatbase-iframe').src = 'https://www.chatbase.co/chatbot-iframe/tztueszwcnpimovuqovv';
+    }
   }
-});
-
-// Auth functions
-function showLogin() {
-  alert('Login functionality will be implemented with Supabase Auth');
-  // Future implementation: Show login modal
-}
-
-function showSignup() {
-  alert('Signup functionality will be implemented with Supabase Auth');
-  // Future implementation: Show signup modal
-}
+  
+  function closeChatbaseWidget() {
+    const widget = document.getElementById('chatbase-widget-container');
+    widget.style.display = 'none';
+    document.getElementById('chatbase-iframe').src = 'about:blank';
+  }
+  
+  // Close widget when clicking outside
+  document.addEventListener('click', function(event) {
+    const widget = document.getElementById('chatbase-widget-container');
+    const toggleBtn = document.querySelector('.chat-toggle');
+    
+    if (widget.style.display === 'block' && 
+        !event.target.closest('#chatbase-widget-container') && 
+        !event.target.closest('.chat-toggle')) {
+      widget.style.display = 'none';
+    }
+  });
 </script>
 </body>
 </html>
