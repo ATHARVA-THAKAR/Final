@@ -1,272 +1,285 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Login - MindCare</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <!-- Supabase SDK -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <style>
-:root {
-  --primary: #6C63FF;
-  --secondary: #4ECDC4;
-  --accent: #FF9F68;
-  --light: #ffffff;
-  --dark: #2d3436;
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindCare - Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        :root {
+            --primary: #6C63FF;
+            --secondary: #4ECDC4;
+            --accent: #FF9F68;
+            --light: #ffffff;
+            --dark: #2d3436;
+            --emergency: #ff6b6b;
+        }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-body {
-  background: linear-gradient(rgba(24, 135, 12, 0.653), rgba(15, 183, 26, 0.637));
-  background-size: 600% 600%;
-  animation: gradientShift 15s ease infinite;
-  color: var(--dark);
-  line-height: 1.6;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
+        body {
+            background: linear-gradient(rgba(24, 135, 12, 0.653), rgba(15, 183, 26, 0.637));
+            background-size: 600% 600%;
+            animation: gradientShift 15s ease infinite;
+            color: var(--dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
 
-@keyframes gradientShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
 
-.container {
-  max-width: 1200px;
-  margin: auto;
-  padding: 0 20px;
-}
+        .login-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
 
-header {
-  background: rgba(0,0,0,0.3);
-  backdrop-filter: blur(10px);
-  color: white;
-  padding: 15px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.2);
-}
-.header-content {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 24px;
-  font-weight: 600;
-}
-.logo i { font-size: 30px; }
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 30px;
+            color: var(--primary);
+        }
 
-.auth-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-grow: 1;
-  padding: 40px 20px;
-}
+        .logo i {
+            font-size: 32px;
+        }
 
-.auth-card {
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 20px;
-  padding: 40px;
-  width: 100%;
-  max-width: 450px;
-  box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-  animation: fadeInUp 1s ease;
-}
-@keyframes fadeInUp {
-  from { transform: translateY(40px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
+        h2 {
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
 
-.auth-header {
-  text-align: center;
-  margin-bottom: 30px;
-}
-.auth-header h2 {
-  color: var(--primary);
-  font-size: 28px;
-  margin-bottom: 10px;
-}
-.auth-header p {
-  color: #666;
-}
+        .role-selection {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
 
-.form-group {
-  margin-bottom: 20px;
-}
-.form-group label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: 600;
-  color: #444;
-}
-.form-group input {
-  width: 100%;
-  padding: 15px;
-  border: 2px solid #ddd;
-  border-radius: 10px;
-  font-size: 16px;
-  transition: border-color 0.3s;
-}
-.form-group input:focus {
-  border-color: var(--primary);
-  outline: none;
-}
+        .role-btn {
+            padding: 15px;
+            border: 2px solid var(--primary);
+            border-radius: 10px;
+            background: white;
+            color: var(--primary);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
 
-.btn {
-  padding: 15px;
-  border-radius: 10px;
-  border: none;
-  cursor: pointer;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  width: 100%;
-  font-size: 16px;
-}
-.btn-primary {
-  background: linear-gradient(45deg, var(--primary), var(--secondary));
-  color: white;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-}
-.btn-primary:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-}
+        .role-btn:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 极速赛车开奖结果
+0 5px 15px rgba(0, 0, 0, 0.1);
+        }
 
-.auth-footer {
-  text-align: center;
-  margin-top: 20px;
-}
-.auth-footer a {
-  color: var(--primary);
-  text-decoration: none;
-  font-weight: 600;
-}
-.auth-footer a:hover {
-  text-decoration: underline;
-}
+        .role-btn.selected {
+            background: var(--primary);
+            color: white;
+        }
 
-.error-message {
-  color: #ff6b6b;
-  text-align: center;
-  margin-top: 15px;
-  font-weight: 500;
-}
+        .login-form {
+            display: none;
+            text-align: left;
+        }
 
-.success-message {
-  color: #4CAF50;
-  text-align: center;
-  margin-top: 15px;
-  font-weight: 500;
-}
+        .form-group {
+            margin-bottom: 20px;
+        }
 
-footer {
-  background: rgba(51, 200, 246, 0.804);
-  color: white;
-  padding: 20px;
-  text-align: center;
-  margin-top: auto;
-}
-  </style>
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 15px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .login-btn:hover {
+            background: #554fd2;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .back-btn {
+            margin-top: 15px;
+            background: transparent;
+            border: none;
+            color: #777;
+            cursor: pointer;
+        }
+
+        .back-btn:hover {
+            color: var(--primary);
+        }
+
+        .emergency-contact {
+            background: var(--emergency);
+            color: white;
+            text-align: center;
+            padding: 12px;
+            font-weight: 600;
+            width: 100%;
+            max-width: 500px;
+            margin-top: 20px;
+            border-radius: 10px;
+        }
+
+        .error-message {
+            background: #ff6b6b;
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+    </style>
 </head>
 <body>
-<header>
-  <div class="container header-content">
-    <div class="logo"><i class="fas fa-brain"></i><h1>MindCare</h1></div>
-  </div>
-</header>
-
-<main class="auth-container">
-  <div class="auth-card">
-    <div class="auth-header">
-      <h2>Welcome Back</h2>
-      <p>Sign in to access your MindCare account</p>
+    <div class="login-container">
+        <div class="logo">
+            <i class="fas fa-brain"></i>
+            <h1>MindCare</h1>
+        </div>
+        
+        <h2>Login to Your Account</h2>
+        
+        <div id="error-message" class="error-message"></div>
+        
+        <div class="login-form" id="loginForm">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="Enter your email">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Enter your password">
+            </div>
+            <button class="login-btn" onclick="login()">Login</button>
+            
+            <div style="text-align: center; margin-top: 20px;">
+                <p>Don't have an account? <a href="signup.html" style="color: var(--primary); font-weight: 600;">Sign up here</a></p>
+            </div>
+        </div>
     </div>
     
-    <form id="login-form">
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input type="email" id="email" placeholder="Enter your email" required>
-      </div>
-      
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input type="password" id="password" placeholder="Enter your password" required>
-      </div>
-      
-      <button type="submit" class="btn btn-primary">Sign In</button>
-      
-      <div id="error-message" class="error-message" style="display: none;"></div>
-      <div id="success-message" class="success-message" style="display: none;"></div>
-    </form>
-    
-    <div class="auth-footer">
-      <p>Don't have an account? <a href="signup.html">Sign up here</a></p>
+    <div class="emergency-contact">
+        <p>If you're in crisis, please call the National Suicide Prevention Lifeline at <strong>1-800-273-8255</strong> or text <strong>HOME</strong> to <strong>741741</strong>.</p>
     </div>
-  </div>
-</main>
 
-<footer>
-  <div class="container">
-    <p>&copy; 2025 MindCare. All rights reserved.</p>
-  </div>
-</footer>
-
-<script>
-// Supabase initialization
-const supabaseUrl = 'https://tztueszwcnpimovuqovv.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR6dHVlc3p3Y25waW1vdnVxb3Z2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc1Mjg0NzYsImV4cCI6MjA3MzEwNDQ3Nn0.-C1x4SNmrWZ2OGuc23KwsjyOkB9MhiqlFFj8O9m5d08';
-const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
-
-// Login form handling
-document.getElementById('login-form').addEventListener('submit', async (e) => {
-  e.preventDefault();
-  
-  const email = document.getElementById('email').value;
-  const password = document.getElementById('password').value;
-  const errorMessage = document.getElementById('error-message');
-  const successMessage = document.getElementById('success-message');
-  
-  errorMessage.style.display = 'none';
-  successMessage.style.display = 'none';
-  
-  try {
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email: email,
-      password: password
-    });
-    
-    if (error) {
-      errorMessage.textContent = error.message;
-      errorMessage.style.display = 'block';
-    } else {
-      successMessage.textContent = 'Login successful! Redirecting...';
-      successMessage.style.display = 'block';
-      
-      // Store user session
-      localStorage.setItem('user', JSON.stringify(data.user));
-      
-      // Redirect to dashboard
-      setTimeout(() => {
-        window.location.href = 'dashboard.html';
-      }, 1500);
-    }
-  } catch (error) {
-    errorMessage.textContent = 'An unexpected error occurred. Please try again.';
-    errorMessage.style.display = 'block';
-  }
-});
-</script>
+    <script>
+        // Supabase initialization
+        const supabaseUrl = 'https://tztueszwcnpimovuqovv.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6Ik极速赛车开奖结果
+pXVCJ9.eyJpc3Mi极速赛车开奖结果
+OiJzdXBhYmFzZSIsInJlZiI6InR6dHVlc3p3Y25waW1vdnVxb3Z2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc1Mjg0NzYsImV4cCI6MjA3MzEwNDQ3Nn0.-C1x4SNmrWZ2OGuc23Kwsjy极速赛车开奖结果
+OkB9MhiqlFFj8O9m5d08';
+        const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+        
+        // Show login form immediately (no role selection needed)
+        document.getElementById('loginForm').style.display = 'block';
+        
+        async function login() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const errorElement = document.getElementById('error-message');
+            
+            // Simple validation
+            if (!email || !password) {
+                errorElement.textContent = 'Please enter both email and password';
+                errorElement.style.display = 'block';
+                return;
+            }
+            
+            try {
+                // Supabase authentication
+                const { data, error } = await supabase.auth.signInWithPassword({
+                    email: email,
+                    password: password
+                });
+                
+                if (error) {
+                    errorElement.textContent = error.message;
+                    errorElement.style.display = 'block';
+                } else {
+                    // Signed in successfully
+                    console.log("User logged in:", data.user);
+                    
+                    // Redirect to dashboard
+                    window.location.href = 'dashboard.html';
+                }
+            } catch (error) {
+                errorElement.textContent = 'An unexpected error occurred. Please try again.';
+                errorElement.style.display = 'block';
+                console.error('Login error:', error);
+            }
+        }
+        
+        // Check if user is already logged in
+        supabase.auth.getSession().then(({ data: { session } }) => {
+            if (session) {
+                // User is already signed in, redirect to dashboard
+                window.location.href = 'dashboard.html';
+            }
+        });
+        
+        // Allow submitting form with Enter key
+        document.getElementById('password').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                login();
+            }
+        });
+    </script>
 </body>
 </html>
