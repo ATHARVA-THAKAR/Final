@@ -125,10 +125,44 @@
       background: #357abd;
     }
 
-    video, audio {
+    /* Admin specific styles */
+    .admin-table {
       width: 100%;
-      border-radius: 8px;
-      outline: none;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+
+    .admin-table th, .admin-table td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .admin-table th {
+      background-color: #f8f9fa;
+      font-weight: 600;
+    }
+
+    .admin-table tr:hover {
+      background-color: #f1f1f1;
+    }
+
+    .action-btn {
+      padding: 6px 12px;
+      margin: 0 5px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .edit-btn {
+      background-color: #4a90e2;
+      color: white;
+    }
+
+    .delete-btn {
+      background-color: #e74c3c;
+      color: white;
     }
 
     /* Responsive */
@@ -153,99 +187,184 @@
   <div class="navbar">
     <h2>Admin Dashboard</h2>
     <div class="profile" onclick="openSidebar()">
-      <img id="profileImage" src="https://static.vecteezy.com/system/resources/previews/021/770/056/non_2x/avatar-of-a-student-character-free-vector.jpg" alt="Profile Avatar">
+      <img id="profileImage" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Profile Avatar">
     </div>
   </div>
 
   <!-- Main Dashboard -->
   <div class="container">
 
-    <!-- Peer-to-Peer Support -->
+    <!-- User Management -->
     <div class="card">
-      <h3>🤝 Peer-to-Peer Support</h3>
-      <p>Connect with your peers for support and collaboration.</p>
-      <a href="#" class="btn">Start Chat</a>
+      <h3>👥 User Management</h3>
+      <p>Manage all users in the system</p>
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Role</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="usersTable">
+          <tr>
+            <td>Loading...</td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
-    <!-- Relaxing Video -->
+    <!-- Analytics -->
     <div class="card">
-      <h3>🎬 Relax with Videos</h3>
-      <video controls poster="https://img.youtube.com/vi/1ZYbU82GVz4/maxresdefault.jpg">
-        <source src="https://www.w3schools.com/howto/rain.mp4" type="video/mp4">
-        Your browser does not support video.
-      </video>
-      <p>Nature sounds & calming visuals 🌿</p>
+      <h3>📊 Analytics</h3>
+      <p>View system usage statistics</p>
+      <div id="analyticsData">
+        <p>Total Users: <span id="totalUsers">Loading...</span></p>
+        <p>Active Sessions: <span id="activeSessions">Loading...</span></p>
+        <p>Counseling Requests: <span id="counselingRequests">Loading...</span></p>
+      </div>
     </div>
 
-    <!-- Relaxing Audio -->
+    <!-- System Settings -->
     <div class="card">
-      <h3>🎵 Relaxing Audio</h3>
-      <audio controls>
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mp3">
-        Your browser does not support audio.
-      </audio>
-      <p>Peaceful music to reduce stress 🎧</p>
+      <h3>⚙️ System Settings</h3>
+      <p>Configure application settings</p>
+      <a href="#" class="btn" style="margin-top: 10px;">General Settings</a>
+      <a href="#" class="btn" style="margin-top: 10px;">Notification Settings</a>
+      <a href="#" class="btn" style="margin-top: 10px;">Privacy Settings</a>
     </div>
 
-    <!-- Meditation Website -->
+    <!-- Content Management -->
     <div class="card">
-      <h3>🧘 Meditation Zone</h3>
-      <p>Guided meditation to calm your mind.</p>
-      <a href="https://www.headspace.com/meditation" target="_blank" class="btn">Go to Meditation</a>
+      <h3>📝 Content Management</h3>
+      <p>Manage resources and articles</p>
+      <a href="#" class="btn" style="margin-top: 10px;">Add New Resource</a>
+      <a href="#" class="btn" style="margin-top: 10px;">Manage Articles</a>
     </div>
 
-    <!-- Notes & Resources -->
+    <!-- Reports -->
     <div class="card">
-      <h3>📚 Notes & Resources</h3>
-      <p>Access study materials & useful guides.</p>
-      <a href="#" class="btn">View Notes</a>
-    </div>
-
-    <!-- Upcoming Events -->
-    <div class="card">
-      <h3>📅 Upcoming Events</h3>
-      <p>Stay updated with classes & college events.</p>
-      <a href="#" class="btn">Check Events</a>
+      <h3>📈 Reports</h3>
+      <p>Generate and view reports</p>
+      <a href="#" class="btn" style="margin-top: 10px;">User Activity Report</a>
+      <a href="#" class="btn" style="margin-top: 10px;">Counseling Report</a>
     </div>
 
   </div>
 
   <script>
-    // Supabase initialization
+    // Supabase configuration
     const supabaseUrl = 'https://tztueszwcnpimovuqovv.supabase.co';
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR6dHVlc3p3Y25waW1vdnVxb3Z2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc1Mjg0NzYsImV4cCI6MjA7MzEwNDQ3Nn0.-C1x4SNmrWZ2OGuc23KwsjyOkB9MhiqlFFj8O9m5d08';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR6dHVlc3p3Y25waW1vdnVxb3Z2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc1Mjg0NzYsImV4cCI6MjA3MzEwNDQ3Nn0.-C1x4SNmrWZ2OGuc23KwsjyOkB9MhiqlFFj8O9m5d08';
+    
+    // Initialize Supabase
     const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
     
-    // Check authentication state
-    async function checkAuth() {
-      const { data: { session } } = await supabase.auth.getSession();
-      
+    // Check authentication state and admin role
+    supabase.auth.getSession().then(({ data: { session } }) => {
       if (!session) {
         // User is not signed in, redirect to login
         window.location.href = 'login.html';
       } else {
-        // User is signed in, display user info
+        // Check if user is admin
         const user = session.user;
-        document.getElementById('profileImage').src = user.user_metadata?.avatar_url || 
-            'https://static.vecteezy.com/system/resources/previews/021/770/056/non_2x/avatar-of-a-student-character-free-vector.jpg';
+        const userRole = user.user_metadata.role;
+        
+        if (userRole !== 'admin') {
+          // User is not admin, redirect to appropriate dashboard
+          if (userRole === 'counselor') {
+            window.location.href = 'counselor_dashboard.html';
+          } else {
+            window.location.href = 'std.html';
+          }
+        } else {
+          // User is admin, display user info and load data
+          document.getElementById('profileImage').src = user.user_metadata.avatar_url || 
+              'https://cdn-icons-png.flaticon.com/512/3135/3135715.png';
+          
+          // Load admin data
+          loadUsers();
+          loadAnalytics();
+        }
+      }
+    });
+    
+    // Listen for auth changes
+    supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_OUT') {
+        window.location.href = 'login.html';
+      }
+    });
+    
+    async function loadUsers() {
+      try {
+        // In a real app, you would fetch users from your Supabase database
+        // This is a mock implementation
+        setTimeout(() => {
+          document.getElementById('usersTable').innerHTML = `
+            <tr>
+              <td>John Doe</td>
+              <td>Student</td>
+              <td>
+                <button class="action-btn edit-btn">Edit</button>
+                <button class="action-btn delete-btn">Delete</button>
+              </td>
+            </tr>
+            <tr>
+              <td>Jane Smith</td>
+              <td>Counselor</td>
+              <td>
+                <button class="action-btn edit-btn">Edit</button>
+                <button class="action-btn delete-btn">Delete</button>
+              </td>
+            </tr>
+            <tr>
+              <td>Bob Johnson</td>
+              <td>Student</td>
+              <td>
+                <button class="action-btn edit-btn">Edit</button>
+                <button class="action-btn delete-btn">Delete</button>
+              </td>
+            </tr>
+          `;
+        }, 1000);
+      } catch (error) {
+        console.error('Error loading users:', error);
+        document.getElementById('usersTable').innerHTML = `
+          <tr>
+            <td colspan="3">Error loading users</td>
+          </tr>
+        `;
       }
     }
     
-    checkAuth();
-    
-    async function logout() {
-      const { error } = await supabase.auth.signOut();
-      if (error) {
-        console.error('Logout error:', error);
-      } else {
-        window.location.href = 'index.html';
+    async function loadAnalytics() {
+      try {
+        // In a real app, you would fetch analytics from your Supabase database
+        // This is a mock implementation
+        setTimeout(() => {
+          document.getElementById('totalUsers').textContent = '153';
+          document.getElementById('activeSessions').textContent = '27';
+          document.getElementById('counselingRequests').textContent = '14';
+        }, 1500);
+      } catch (error) {
+        console.error('Error loading analytics:', error);
       }
+    }
+    
+    function logout() {
+      supabase.auth.signOut().then(() => {
+        window.location.href = 'index.html';
+      }).catch((error) => {
+        console.error('Logout error:', error);
+      });
     }
 
     function openSidebar() {
       document.getElementById("mySidebar").style.width = "220px";
     }
-    
     function closeSidebar() {
       document.getElementById("mySidebar").style.width = "0";
     }
