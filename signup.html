@@ -1,581 +1,296 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MindCare - Sign Up</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Firebase SDK -->
-  <script src=" "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js""></script>
-  <script src=" "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js""></script>
-    
-    <style>
-        :root {
-            --primary: #6C63FF;
-            --secondary: #4ECDC4;
-            --accent: #FF9F68;
-            --light: #ffffff;
-            --dark: #2d3436;
-            --emergency: #ff6b6b;
-            --error: #ff4757;
-            --success: #2ed573;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sign Up - MindCare</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Supabase SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+:root {
+  --primary: #6C63FF;
+  --secondary: #4ECDC4;
+  --accent: #FF9F68;
+  --light: #ffffff;
+  --dark: #2d3436;
+}
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
 
-        body {
-            background: linear-gradient(270deg, var(--primary), var(--secondary), var(--accent));
-            background-size: 600% 600%;
-            animation: gradientShift 15s ease infinite;
-            color: var(--dark);
-            line-height: 1.6;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
+body {
+  background: linear-gradient(rgba(24, 135, 12, 0.653), rgba(15, 183, 26, 0.637));
+  background-size: 600% 600%;
+  animation: gradientShift 15s ease infinite;
+  color: var(--dark);
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
 
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
 
-        .signup-container {
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 20px;
-            padding: 40px;
-            width: 100%;
-            max-width: 500px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-            text-align: center;
-            position: relative;
-        }
+.container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 0 20px;
+}
 
-        .logo {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            font-size: 28px;
-            font-weight: 600;
-            margin-bottom: 30px;
-            color: var(--primary);
-        }
+header {
+  background: rgba(0,0,0,0.3);
+  backdrop-filter: blur(10px);
+  color: white;
+  padding: 15px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+}
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 24px;
+  font-weight: 600;
+}
+.logo i { font-size: 30px; }
 
-        .logo i {
-            font-size: 32px;
-        }
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+  padding: 40px 20px;
+}
 
-        h2 {
-            color: var(--primary);
-            margin-bottom: 20px;
-        }
+.auth-card {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  padding: 40px;
+  width: 100%;
+  max-width: 450px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+  animation: fadeInUp 1s ease;
+}
+@keyframes fadeInUp {
+  from { transform: translateY(40px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
 
-        .role-selection {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-bottom: 25px;
-        }
+.auth-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+.auth-header h2 {
+  color: var(--primary);
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+.auth-header p {
+  color: #666;
+}
 
-        .role-btn {
-            padding: 15px;
-            border: 2px solid var(--primary);
-            border-radius: 10px;
-            background: white;
-            color: var(--primary);
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
+.form-group {
+  margin-bottom: 20px;
+}
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #444;
+}
+.form-group input {
+  width: 100%;
+  padding: 15px;
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  font-size: 16px;
+  transition: border-color 0.3s;
+}
+.form-group input:focus {
+  border-color: var(--primary);
+  outline: none;
+}
 
-        .role-btn:hover {
-            background: var(--primary);
-            color: white;
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
+.btn {
+  padding: 15px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  width: 100%;
+  font-size: 16px;
+}
+.btn-primary {
+  background: linear-gradient(45deg, var(--primary), var(--secondary));
+  color: white;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
 
-        .role-btn.selected {
-            background: var(--primary);
-            color: white;
-        }
+.auth-footer {
+  text-align: center;
+  margin-top: 20px;
+}
+.auth-footer a {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 600;
+}
+.auth-footer a:hover {
+  text-decoration: underline;
+}
 
-        .signup-form {
-            display: none;
-            text-align: left;
-        }
+.error-message {
+  color: #ff6b6b;
+  text-align: center;
+  margin-top: 15px;
+  font-weight: 500;
+}
 
-        .form-group {
-            margin-bottom: 20px;
-        }
+.success-message {
+  color: #4CAF50;
+  text-align: center;
+  margin-top: 15px;
+  font-weight: 500;
+}
 
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: var(--dark);
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
-        }
-
-        .password-strength {
-            height: 5px;
-            background: #eee;
-            border-radius: 3px;
-            margin-top: 5px;
-            overflow: hidden;
-        }
-
-        .password-strength-bar {
-            height: 100%;
-            width: 0%;
-            transition: width 0.3s ease;
-        }
-
-        .password-weak .password-strength-bar {
-            width: 33%;
-            background: var(--error);
-        }
-
-        .password-medium .password-strength-bar {
-            width: 66%;
-            background: var(--accent);
-        }
-
-        .password-strong .password-strength-bar {
-            width: 100%;
-            background: var(--success);
-        }
-
-        .password-feedback {
-            font-size: 14px;
-            margin-top: 5px;
-            color: #777;
-        }
-
-        .signup-btn {
-            width: 100%;
-            padding: 15px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .signup-btn:hover {
-            background: #554fd2;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .back-btn {
-            margin-top: 15px;
-            background: transparent;
-            border: none;
-            color: #777;
-            cursor: pointer;
-        }
-
-        .back-btn:hover {
-            color: var(--primary);
-        }
-
-        .login-redirect {
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        .login-redirect a {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        .login-redirect a:hover {
-            text-decoration: underline;
-        }
-
-        .emergency-contact {
-            background: var(--emergency);
-            color: white;
-            text-align: center;
-            padding: 12px;
-            font-weight: 600;
-            width: 100%;
-            max-width: 500px;
-            margin-top: 20px;
-            border-radius: 10px;
-        }
-
-        .error-message {
-            background: var(--error);
-            color: white;
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            display: none;
-        }
-
-        .success-message {
-            background: var(--success);
-            color: white;
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            display: none;
-        }
-
-        .firebase-config-help {
-            margin-top: 20px;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 8px;
-            border-left: 4px solid var(--primary);
-            text-align: left;
-            display: none;
-        }
-
-        .firebase-config-help h4 {
-            margin-bottom: 10px;
-            color: var(--primary);
-        }
-
-        .firebase-config-help ol {
-            padding-left: 20px;
-        }
-
-        .firebase-config-help li {
-            margin-bottom: 8px;
-        }
-    </style>
+footer {
+  background: rgba(51, 200, 246, 0.804);
+  color: white;
+  padding: 20px;
+  text-align: center;
+  margin-top: auto;
+}
+  </style>
 </head>
 <body>
-    <div class="signup-container">
-        <div class="logo">
-            <i class="fas fa-brain"></i>
-            <h1>MindCare</h1>
-        </div>
-        
-        <h2>Create Your Account</h2>
-        
-        <div class="error-message" id="errorMessage"></div>
-        <div class="success-message" id="successMessage"></div>
-        
-        <div class="firebase-config-help" id="firebaseConfigHelp">
-            <h4>Firebase Configuration Required</h4>
-            <p>To fix this error, please follow these steps:</p>
-            <ol>
-                <li>Go to the <a href="https://console.firebase.google.com/" target="_blank">Firebase Console</a></li>
-                <li>Select your project</li>
-                <li>Click on the gear icon ⚙️ > <strong>Project settings</strong></li>
-                <li>Scroll down to <strong>Your apps</strong> section</li>
-                <li>Copy the correct configuration object</li>
-                <li>Replace the firebaseConfig object in the code with your actual values</li>
-            </ol>
-        </div>
-        
-        <div class="role-selection" id="roleSelection">
-            <button class="role-btn" onclick="selectRole('student')">
-                <i class="fas fa-user-graduate"></i> Sign up as Student
-            </button>
-            <button class="role-btn" onclick="selectRole('admin')">
-                <i class="fas fa-user-shield"></i> Sign up as Admin
-            </button>
-            <button class="role-btn" onclick="selectRole('counselor')">
-                <i class="fas fa-user-md"></i> Sign up as Counselor
-            </button>
-        </div>
-        
-        <div class="signup-form" id="signupForm">
-            <div class="form-group">
-                <label for="fullName">Full Name</label>
-                <input type="text" id="fullName" placeholder="Enter your full name">
-            </div>
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" placeholder="Enter your email">
-            </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" placeholder="Create a password" onkeyup="checkPasswordStrength()">
-                <div class="password-strength">
-                    <div class="password-strength-bar" id="passwordStrengthBar"></div>
-                </div>
-                <div class="password-feedback" id="passwordFeedback"></div>
-            </div>
-            <div class="form-group">
-                <label for="confirmPassword">Confirm Password</label>
-                <input type="password" id="confirmPassword" placeholder="Confirm your password" onkeyup="checkPasswordMatch()">
-                <div class="password-feedback" id="passwordMatchFeedback"></div>
-            </div>
-            <button class="signup-btn" onclick="signup()">Create Account</button>
-            <button class="back-btn" onclick="goBackToRoleSelection()">
-                <i class="fas fa-arrow-left"></i> Back to role selection
-            </button>
-            
-            <div class="login-redirect">
-                <p>Already have an account? <a href="login.html">Log in here</a></p>
-            </div>
-        </div>
+<header>
+  <div class="container header-content">
+    <div class="logo"><i class="fas fa-brain"></i><h1>MindCare</h1></div>
+  </div>
+</header>
+
+<main class="auth-container">
+  <div class="auth-card">
+    <div class="auth-header">
+      <h2>Create Account</h2>
+      <p>Join MindCare to access mental health support</p>
     </div>
     
-    <div class="emergency-contact">
-        <p>If you're in crisis, please call the National Suicide Prevention Lifeline at <strong>1-800-273-8255</strong> or text <strong>HOME</strong> to <strong>741741</strong>.</p>
+    <form id="signup-form">
+      <div class="form-group">
+        <label for="fullname">Full Name</label>
+        <input type="text" id="fullname" placeholder="Enter your full name" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="Enter your email" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Create a password" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="confirm-password">Confirm Password</label>
+        <input type="password" id="confirm-password" placeholder="Confirm your password" required>
+      </div>
+      
+      <button type="submit" class="btn btn-primary">Create Account</button>
+      
+      <div id="error-message" class="error-message" style="display: none;"></div>
+      <div id="success-message" class="success-message" style="display: none;"></div>
+    </form>
+    
+    <div class="auth-footer">
+      <p>Already have an account? <a href="login.html">Sign in here</a></p>
     </div>
+  </div>
+</main>
 
-    <script>
-        // Firebase configuration
-        const firebaseConfig = {
-          apiKey: "AIzaSyBhd1nA_w_g1DQFI61Cci0AIa7ODy7-mgI",
-          authDomain: "sih1-6ed00.firebaseapp.com",
-          projectId: "sih1-6ed00",
-          storageBucket: "sih1-6ed00.firebasestorage.app",
-          messagingSenderId: "503819383394",
-          appId: "1:503819383394:web:94ac77058b6b9f9b0f173b"
-        };
+<footer>
+  <div class="container">
+    <p>&copy; 2025 MindCare. All rights reserved.</p>
+  </div>
+</footer>
 
-        let selectedRole = '';
-        let firebaseInitialized = false;
-        
-        try {
-            // Initialize Firebase
-            firebase.initializeApp(firebaseConfig);
-            firebaseInitialized = true;
-            console.log("Firebase initialized successfully");
-        } catch (error) {
-            console.error("Firebase initialization error:", error);
-            showError("Firebase configuration error. Please check your API key and configuration.");
-            document.getElementById('firebaseConfigHelp').style.display = 'block';
+<script>
+// Supabase initialization
+const supabaseUrl = 'https://tztueszwcnpimovuqovv.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR6dHVlc3p3Y25waW1vdnVxb3Z2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc1Mjg0NzYsImV4cCI6MjA3MzEwNDQ3Nn0.-C1x4SNmrWZ2OGuc23KwsjyOkB9MhiqlFFj8O9m5d08';
+const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+// Signup form handling
+document.getElementById('signup-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  
+  const fullname = document.getElementById('fullname').value;
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
+  const confirmPassword = document.getElementById('confirm-password').value;
+  const errorMessage = document.getElementById('error-message');
+  const successMessage = document.getElementById('success-message');
+  
+  errorMessage.style.display = 'none';
+  successMessage.style.display = 'none';
+  
+  // Validate passwords match
+  if (password !== confirmPassword) {
+    errorMessage.textContent = 'Passwords do not match';
+    errorMessage.style.display = 'block';
+    return;
+  }
+  
+  try {
+    const { data, error } = await supabase.auth.signUp({
+      email: email,
+      password: password,
+      options: {
+        data: {
+          full_name: fullname
         }
-        
-        function showError(message) {
-            const errorElement = document.getElementById('errorMessage');
-            errorElement.textContent = message;
-            errorElement.style.display = 'block';
-            document.getElementById('successMessage').style.display = 'none';
-            
-            // Hide error after 5 seconds
-            setTimeout(() => {
-                errorElement.style.display = 'none';
-            }, 5000);
-        }
-        
-        function showSuccess(message) {
-            const successElement = document.getElementById('successMessage');
-            successElement.textContent = message;
-            successElement.style.display = 'block';
-            document.getElementById('errorMessage').style.display = 'none';
-            
-            // Hide success after 5 seconds
-            setTimeout(() => {
-                successElement.style.display = 'none';
-            }, 5000);
-        }
-        
-        function selectRole(role) {
-            if (!firebaseInitialized) {
-                showError("Firebase is not properly configured. Please check the configuration instructions.");
-                document.getElementById('firebaseConfigHelp').style.display = 'block';
-                return;
-            }
-            
-            selectedRole = role;
-            
-            // Update UI to show selected role
-            const roleButtons = document.querySelectorAll('.role-btn');
-            roleButtons.forEach(btn => {
-                btn.classList.remove('selected');
-            });
-            event.currentTarget.classList.add('selected');
-            
-            // Show signup form after a brief delay
-            setTimeout(() => {
-                document.getElementById('roleSelection').style.display = 'none';
-                document.getElementById('signupForm').style.display = 'block';
-            }, 300);
-        }
-        
-        function goBackToRoleSelection() {
-            document.getElementById('signupForm').style.display = 'none';
-            document.getElementById('roleSelection').style.display = 'flex';
-            selectedRole = '';
-        }
-        
-        function checkPasswordStrength() {
-            const password = document.getElementById('password').value;
-            const strengthBar = document.getElementById('passwordStrengthBar');
-            const feedback = document.getElementById('passwordFeedback');
-            
-            // Reset classes
-            strengthBar.parentElement.classList.remove('password-weak', 'password-medium', 'password-strong');
-            
-            if (password.length === 0) {
-                feedback.textContent = '';
-                return;
-            }
-            
-            // Calculate strength
-            let strength = 0;
-            let feedbackText = '';
-            
-            // Length check
-            if (password.length > 5) strength++;
-            if (password.length > 8) strength++;
-            
-            // Character variety checks
-            if (/[A-Z]/.test(password)) strength++;
-            if (/[0-9]/.test(password)) strength++;
-            if (/[^A-Za-z0-9]/.test(password)) strength++;
-            
-            // Apply visual feedback
-            if (strength < 3) {
-                strengthBar.parentElement.classList.add('password-weak');
-                feedbackText = 'Weak password';
-            } else if (strength < 5) {
-                strengthBar.parentElement.classList.add('password-medium');
-                feedbackText = 'Medium strength password';
-            } else {
-                strengthBar.parentElement.classList.add('password-strong');
-                feedbackText = 'Strong password';
-            }
-            
-            feedback.textContent = feedbackText;
-        }
-        
-        function checkPasswordMatch() {
-            const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
-            const feedback = document.getElementById('passwordMatchFeedback');
-            
-            if (confirmPassword.length === 0) {
-                feedback.textContent = '';
-                return;
-            }
-            
-            if (password === confirmPassword) {
-                feedback.textContent = 'Passwords match';
-                feedback.style.color = 'var(--success)';
-            } else {
-                feedback.textContent = 'Passwords do not match';
-                feedback.style.color = 'var(--error)';
-            }
-        }
-        
-        function signup() {
-            if (!firebaseInitialized) {
-                showError("Firebase is not properly configured. Please check the configuration instructions.");
-                document.getElementById('firebaseConfigHelp').style.display = 'block';
-                return;
-            }
-            
-            const fullName = document.getElementById('fullName').value;
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
-            
-            // Validation
-            if (!fullName || !email || !password || !confirmPassword) {
-                showError('Please fill in all fields');
-                return;
-            }
-            
-            if (password !== confirmPassword) {
-                showError('Passwords do not match');
-                return;
-            }
-            
-            if (password.length < 6) {
-                showError('Password should be at least 6 characters long');
-                return;
-            }
-            
-            // Firebase create user
-            firebase.auth().createUserWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    // Signed up successfully
-                    const user = userCredential.user;
-                    
-                    // Update user profile with display name
-                    user.updateProfile({
-                        displayName: fullName
-                    }).then(() => {
-                        showSuccess('Account created successfully! Redirecting to login...');
-                        
-                        // In a real app, you would save the user role to Firestore or set custom claims
-                        // For now, we'll just redirect to login after a delay
-                        setTimeout(() => {
-                            window.location.href = 'login.html';
-                        }, 2000);
-                    }).catch((error) => {
-                        showError('Error updating profile: ' + error.message);
-                    });
-                })
-                .catch((error) => {
-                    const errorCode = error.code;
-                    const errorMessage = error.message;
-                    
-                    // User-friendly error messages
-                    let friendlyError = "Sign up failed. ";
-                    
-                    switch(errorCode) {
-                        case 'auth/email-already-in-use':
-                            friendlyError += "This email is already registered.";
-                            break;
-                        case 'auth/invalid-email':
-                            friendlyError += "The email address is not valid.";
-                            break;
-                        case 'auth/operation-not-allowed':
-                            friendlyError += "Email/password accounts are not enabled.";
-                            break;
-                        case 'auth/weak-password':
-                            friendlyError += "The password is too weak.";
-                            break;
-                        default:
-                            friendlyError += errorMessage;
-                    }
-                    
-                    showError(friendlyError);
-                });
-        }
-        
-        // Check if user is already logged in
-        if (firebaseInitialized) {
-            firebase.auth().onAuthStateChanged((user) => {
-                if (user) {
-                    // User is signed in, redirect to appropriate dashboard
-                    user.getIdTokenResult().then((idTokenResult) => {
-                        const role = idTokenResult.claims.role || 'student';
-                        window.location.href = role + '.html';
-                    }).catch(() => {
-                        window.location.href = 'std.html';
-                    });
-                }
-            });
-        }
-    </script>
+      }
+    });
+    
+    if (error) {
+      errorMessage.textContent = error.message;
+      errorMessage.style.display = 'block';
+    } else {
+      successMessage.textContent = 'Account created successfully! Please check your email for verification.';
+      successMessage.style.display = 'block';
+      
+      // Store user session
+      localStorage.setItem('user', JSON.stringify(data.user));
+      
+      // Redirect to dashboard after a delay
+      setTimeout(() => {
+        window.location.href = 'dashboard.html';
+      }, 2000);
+    }
+  } catch (error) {
+    errorMessage.textContent = 'An unexpected error occurred. Please try again.';
+    errorMessage.style.display = 'block';
+  }
+});
+</script>
 </body>
 </html>
